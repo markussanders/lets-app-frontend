@@ -1,0 +1,63 @@
+#navbar {
+  display: inline-flex;
+}
+
+#logo {
+  border: 2px solid black;
+}
+
+#navbar-buttons {
+  list-style: none;
+  display: inline-flex;
+}
+
+.navbar-button {
+  margin: 5%;
+}
+
+.navbar-button:hover {
+  cursor: crosshair;
+  color: gainsboro;
+}
+
+#search-bar {
+/*  */
+}
+#search-input {
+  width: 40%;
+}
+#search-submit {
+  width: 5%;
+}
+
+#suggester-buttons {
+  list-style: none;
+  display: inline-flex;
+}
+
+.suggester-button {
+  margin: 25%;
+}
+.suggester-button:hover {
+  color: gainsboro;
+  cursor: grab;
+}
+
+#venue-cards-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: space-around;
+}
+
+
+.venue-card {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+}
+.venue-card-img {
+  max-width: 400px;
+  max-height: 400px;
+}
