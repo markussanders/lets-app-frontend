@@ -23,8 +23,7 @@ class Search extends Component {
     })
       .then(resp => resp.json())
       .then(results => {
-        console.log(" results = ", results);
-        this.setState({results});
+         this.setState({results});
         console.log('this.state.results = ', this.state.results)
         this.props.updateSearched(this.state.results);
       })
@@ -47,21 +46,24 @@ class Search extends Component {
   
   render() {
     return (
-      <form 
-        className="input"
-        onSubmit={(e) => {
-          e.preventDefault()
-          return this.getInfo()
-        }} 
-      >
-        <input
-          className="input"
-          placeholder="Search for..."
-          ref={input => this.search = input}
-          onChange={this.handleInputChange}
-          />
-        <input className="button is-dark" type='submit' name='submit' />
-      </form>
+      <section className="tile is-5 is-parent" id="search">
+          <form 
+          // className="input"
+          id="search-from"
+          onSubmit={(e) => {
+            e.preventDefault()
+            return this.getInfo()
+          }} 
+        >
+          <input
+            className="input"
+            placeholder="Search for..."
+            ref={input => this.search = input}
+            onChange={this.handleInputChange}
+            />
+          <input className="button is-dark" type='submit' name='submit' />
+        </form>
+      </section>
     )
   }
 }
