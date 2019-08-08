@@ -19,3 +19,25 @@
   max-height: 260px;
   max-width: 350px;
 }
+
+#venue-show-image {
+  padding-left: 10%;
+  max-height: 560px;
+  max-width: 750px;
+}
+
+.random-bg[data-v-55463a24] {
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 30rem;
+}
+#suggester {
+  background-position: 60%, 40%;
+  background-size: cover;
+  height: 30rem;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url(https://i.pinimg.com/originals/1f/36/9f/1f369fa61a8db31f0795e03daae7f09b.jpg);
+}
