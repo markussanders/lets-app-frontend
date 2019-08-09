@@ -29,20 +29,26 @@ const VenueCard = props => {
 
 
     return (
-        <div className="card venue-card" onClick={() => {
+        <div className="columns is-one-quarter" onClick={() => {
             addVenueToDataBase(venue);
         }}>
-            <div className="card-content">
-                <div className="venue-card-image-container">
-                    <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
-                </div>
-                <footer className="card-footer">
-                    <p className="card-footer-item">{venue.name}</p>
-                    <p className="card-footer-item">{venue.categories ? venue.categories[0].title : 'Food'}</p>
-                </footer>
-            </div>
+            {/* <span data-label={venue.name} className="is-primary is-top is-medium b-tooltip">
+                <figure className="card image">
+                    <div className="text-container">
+                        <img alt={venue.name} data-src={venue.image_url} src={venue.image_url} lazy="loaded"/>
+                        <div className="bottom-left is-hidden-tablet">{venue.name}</div>
+                    </div>
+                </figure>
+            </span> */}
 
-        </div>
+             <div className="venue-card-image-container">
+                <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+            </div>
+            <footer className="card-footer">
+                <p className="card-footer-item">{venue.name}</p>
+                <p className="card-footer-item">{venue.categories ? venue.categories[0].title : 'Food'}</p>
+            </footer>
+    </div>
     )
 }
 
