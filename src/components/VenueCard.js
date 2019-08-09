@@ -29,11 +29,13 @@ const VenueCard = props => {
 
 
     return (
-        <div className="card" onClick={() => {
+        <div className="card venue-card" onClick={() => {
             addVenueToDataBase(venue);
         }}>
             <div className="card-content">
-                <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+                <div className="venue-card-image-container">
+                    <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+                </div>
                 <footer className="card-footer">
                     <p className="card-footer-item">{venue.name}</p>
                     <p className="card-footer-item">{venue.categories ? venue.categories[0].title : 'Food'}</p>

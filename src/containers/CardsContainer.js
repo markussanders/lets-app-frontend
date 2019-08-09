@@ -34,7 +34,7 @@ class CardsContainer extends React.Component {
 
     render() {
         return (
-            <div className="tile is-12 is-parent">
+            <div className="tile is-12 is-parent" id="cards-container">
                 {this.createVenueCards()}
             </div>
             
