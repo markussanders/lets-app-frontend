@@ -1,63 +1,21 @@
-#navbar {
-  display: inline-flex;
-}
-
-#logo {
-  border: 2px solid black;
-}
-
-#navbar-buttons {
-  list-style: none;
-  display: inline-flex;
-}
-
-.navbar-button {
-  margin: 5%;
-}
-
-.navbar-button:hover {
-  cursor: crosshair;
-  color: gainsboro;
-}
-
-#search-bar {
-/*  */
-}
-#search-input {
+#search-input.input{
   width: 40%;
-}
-#search-submit {
-  width: 5%;
-}
-
-#suggester-buttons {
-  list-style: none;
-  display: inline-flex;
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+  left: 25%;
 }
 
-.suggester-button {
-  margin: 25%;
-}
-.suggester-button:hover {
-  color: gainsboro;
-  cursor: grab;
+#i-want-to {
+  padding: 5%;
 }
 
-#venue-cards-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex-grow: 1;
-  justify-content: space-around;
-}
+/* #suggester {
+  justify-self: center;
+  width: 50%;
+  left: 25%;
+} */
 
 
-.venue-card {
-  width: 400px;
-  height: 400px;
-  object-fit: contain;
-}
-.venue-card-img {
-  max-width: 400px;
-  max-height: 400px;
+.venue-card-image {
+  max-height: 260px;
+  max-width: 350px;
 }
