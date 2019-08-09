@@ -15,7 +15,7 @@ const Suggester = props => {
                         <div className="column is-3 has-text-black" id="drink-button">Drink</div>
                         <div className="column is-3 has-text-black" id="listen-button">Listen</div>
                         <div className="column is-3 has-text-bkacm" id="watch-button">Watch</div>
-                        <div className="random-bg has-background-primary" id="image-container"></div>
+                        {/* <div className="random-bg has-background-primary" id="image-container"></div> */}
                     </div>
                 </div>
             </section>

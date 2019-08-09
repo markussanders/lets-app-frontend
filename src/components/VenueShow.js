@@ -1,8 +1,4 @@
 import React from 'react';
- 
-const parseVal = val => {
-    return JSON.parse(val);
-}
 
 class VenueShow extends React.Component {
 

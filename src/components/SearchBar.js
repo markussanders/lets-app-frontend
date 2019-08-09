@@ -57,11 +57,12 @@ class Search extends Component {
         >
           <input
             className="input"
+            id="search-input"
             placeholder="Search for..."
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-          <input className="button is-dark" type='submit' name='submit' />
+          <input className="button is-dark" id="search-submit" type='submit' name='submit' />
         </form>
       </section>
     )

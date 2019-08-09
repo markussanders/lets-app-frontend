@@ -7,6 +7,7 @@ import NavBar from './components/NavBar';
 import Suggester from './components/Suggester';
 import CardsContainer from './containers/CardsContainer';
 import VenueShow from './components/VenueShow';
+import Background from './containers/Background';
 
 
 class App extends React.Component {
@@ -17,6 +18,7 @@ class App extends React.Component {
       currentUser: false,
       searched: [],
       selectedVenue: null,
+      imgUrl: '',
     }
   }
 
@@ -40,9 +42,14 @@ class App extends React.Component {
           return (
             <div>
               <NavBar currentUser={this.state.currentUser} />
-              <SearchBar {...routeProps} updateSearched={this.updateSearched} />
-              <Suggester />
-              <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
+              <section id="subcontainer">
+                <Background imgUrl={this.state.imgUrl} />
+              </section>
+              <section id="topcontainer">
+                <SearchBar {...routeProps} updateSearched={this.updateSearched} />
+                <Suggester />
+                <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
+              </section>
             </div>
           ) }}
         />
