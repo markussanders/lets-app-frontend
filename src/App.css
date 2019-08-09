@@ -5,17 +5,110 @@
 }
 
 #i-want-to {
-  padding: 5%;
+  /* padding: 5%; */
+  /* position: absolute; */
 }
 
-/* #suggester {
-  justify-self: center;
-  width: 50%;
-  left: 25%;
-} */
+#venue-show-image {
+  padding-left: 10%;
+  max-height: 560px;
+  max-width: 750px;
+}
 
+.random-bg{
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 30rem;
+}
 
-.venue-card-image {
-  max-height: 260px;
-  max-width: 350px;
+#eat-button:hover ~ #image-container {
+  background-size: cover;
+  background-position: absolute;
+  background-repeat: no-repeat;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+  url(https://cdn.shopify.com/s/files/1/0690/5295/files/dinner_outfits_party_outfit_2048x2048.jpg?687698953360450850);
+}
+#drink-button:hover ~ #image-container {
+  color: white;
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://blogs.bmj.com/bmjopen/files/2016/11/alcohol-492871_960_720.jpg);
+}
+#listen-button:hover ~ #image-container {
+  color: white;
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://media2.giphy.com/media/13ekKst01ih7Vu/source.gif);
+}
+#watch-button:hover ~ #image-container{
+  color: white;
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(https://www.cityofchicago.org/content/dam/city/depts/dca/Millennium%20Park/mpfilmseries650.jpg);
+}
+
+#image-container {
+  width: 100%;
+  position: absolute;
+  top: 20%;
+  padding: 10%;
+}
+
+.is-3 .has-text-black {
+  margin: 20%;
+  text-align: center;
+  font-size: 2em;
+  /* position: absolute; */
+}
+
+#cards-container {
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: space-evenly;
+}
+
+.card .venue-card {
+  width: 400px;
+  height: 400px;
+}
+
+.card-content {
+  width: 400px;
+  height: 400px;
+}
+.card-image img {
+  object-fit: contain;
+}
+.venue-card-image-container img{
+  max-height: 240px;
+}
+
+.venue-card-image-container {
+  justify-content: center;
+}
+
+#search {
+  padding-bottom: 30%;
+  text-align: center;
+}
+
+#suggester-container {
+  text-align: center;
+}
+
+.breadcrumb .navbar-item {
+  text-align: right;
 }

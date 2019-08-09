@@ -1,11 +1,13 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch} from 'react-router-dom';
 import '../node_modules/bulma/css/bulma.css';
 import './App.css';
 import SearchBar from './components/SearchBar';
 import NavBar from './components/NavBar';
 import Suggester from './components/Suggester';
 import CardsContainer from './containers/CardsContainer';
+import VenueShow from './components/VenueShow';
+
 
 class App extends React.Component {
 
@@ -14,6 +16,7 @@ class App extends React.Component {
     this.state = {
       currentUser: false,
       searched: [],
+      selectedVenue: null,
     }
   }
 
@@ -21,12 +24,17 @@ class App extends React.Component {
     this.setState({
       searched: searched,
     })
-    console.log('this.state.searched =', this.state.searched)
   }
-  
+
+  updateSelectedVenue = venue => {
+    this.setState({selectedVenue: venue});
+    console.log(this.state)
+  }
+
   render () {
     return (
     <div>
+      <Switch> 
       <Route exact path='/' render={(routeProps) => <Redirect to = "/home" />}/>
         <Route exact path='/home' render={(routeProps) => {
           return (
@@ -34,20 +42,19 @@ class App extends React.Component {
               <NavBar currentUser={this.state.currentUser} />
               <SearchBar {...routeProps} updateSearched={this.updateSearched} />
               <Suggester />
-              <CardsContainer searched={this.state.searched}/>
+              <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
             </div>
           ) }}
         />
-
-        {/* <Route exact path='/venues/:id' render={(routeProps) => {
+        <Route exact path='/venues/:id'  render={(routeProps) => {
           return (
             <div>
               <NavBar currentUser={this.state.currentUser} />
-              <h2>VENUE SHOW</h2>
-              <CardsContainer />
+              <VenueShow venue={this.state.selectedVenue} />
             </div>
-          ) 
-        }} />*/}
+          )
+        }} />
+     </Switch>
     </div>
   );
   }
