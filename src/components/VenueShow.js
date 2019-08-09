@@ -1,6 +1,8 @@
 import React from 'react';
-
-
+ 
+const parseVal = val => {
+    return JSON.parse(val);
+}
 
 class VenueShow extends React.Component {
 
@@ -13,6 +15,7 @@ class VenueShow extends React.Component {
     
     render () {
         const venue = this.state.venue;
+        console.log(venue);
         return (
             <div className="tile is-ancestor">
               <div className="tile is-parent">
@@ -23,6 +26,7 @@ class VenueShow extends React.Component {
                 <div className="tile is-4 is-vertical is-parent">
                     <div className="tile is-child box">
                         <p className="title">{venue.name}</p>
+                        <p className="subtitle is-5">Currently {venue.open ? "open" : 'closed'}</p>
                     </div>
                     <div className="tile is-child box">
                         <p className="subtitle is-5">{venue.phone}</p>
