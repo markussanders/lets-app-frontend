@@ -34,10 +34,12 @@ class CardsContainer extends React.Component {
 
     render() {
         return (
-            <div className="tile is-12 is-parent" id="cards-container">
-                {this.createVenueCards()}
+            <div className="" id="cards-container">
+                <h1 className="Title">Trending</h1>
+                <div className="columns is-multiline is-mobile is-centered">
+                    {this.createVenueCards()}
+                </div>
             </div>
-            
         )
     }
 }

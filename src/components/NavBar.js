@@ -15,7 +15,7 @@ import React from 'react';
     const notLoggedIn = (
         // < div className = "navbar-start">
             <ul className="breadcrumb is-right" aria-label="breadcrumbs">
-                <li> <span className="icon is-small"> <i class="fas fa-home" aria-hidden="true"></i></span><a href="/" className="navbar-item"> Browse Events </a> </li>
+                <li> <span className="icon is-small"> <i className="fas fa-home" aria-hidden="true"></i></span><a href="/" className="navbar-item"> Browse Events </a> </li>
                 <li><a href="/about" className="navbar-item"> About </a></li>
                 <li><a href="#" className="navbar-item" onClick={() => props.login()}> Login </a></li>
                 <li><a href="#" className="navbar-item" onClick={() => props.signup()}> Signup </a> </li>
