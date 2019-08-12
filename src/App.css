@@ -211,3 +211,7 @@ body {
   flex-shrink: 1;
   padding: .75rem;
 }
+
+#review-text {
+  font-size: 6em;
+}

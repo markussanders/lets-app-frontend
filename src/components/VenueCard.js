@@ -24,8 +24,8 @@ const VenueCard = props => {
         }).then(resp => resp.json()).then(result => retrieveVenue(venue));
     }
     const retrieveVenue = (venue) => {
-        console.log('RETRIEVE VENUE = ', venue)
-        fetch(`http://localhost:3000/venues/${venue.yelp_id}`).then(resp => resp.json()).then(result => {
+        let venueId = venue.yelp_id ? venue.yelp_id : venue.id;
+        fetch(`http://localhost:3000/venues/${venueId}`).then(resp => resp.json()).then(result => {
             props.updateSelectedVenue(result);
             props.history.push(`/venues/${venue.yelp_id}`);
         })

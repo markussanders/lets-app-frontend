@@ -11,15 +11,15 @@ class VenueShow extends React.Component {
 
 
     renderPhotos = venue => {
-        let photos = JSON.parse(venue.photos)
+        console.log('VENUE PHOTOS ==', venue)
+        let photos = JSON.parse(venue.venue.photos)
         return photos.map(photo => {
            return <img src={photo} alt={venue.name}/>
         })
     }
     renderReviews = venue => {
-        console.log('venue= ', venue)
-        let str = venue.reviews.replace('[', '').replace(']','');
-        str.map(review => {
+        console.log('VENUE REVIEWS ==', venue)
+        return venue.reviews.map(review => {
             return (
                 <div>
                     <h2>Rating: {review.rating}</h2>
@@ -32,7 +32,6 @@ class VenueShow extends React.Component {
     
     render () {
         const venue = this.state.venue;
-        console.log(venue.reviews);
         return (
             <div className="tile is-ancestor">
               <div className="tile is-parent">
@@ -48,8 +47,8 @@ class VenueShow extends React.Component {
                     </div>
                     <div className="tile is-child box">
                         <div>
-                            {this.props.venue ? this.renderPhotos(venue) : null}
-                            {/* {this.props.venue ? this.renderReviews(venue) : null} */}
+                            {this.state.venue ? this.renderReviews(venue) : null}
+                            {this.state.venue ? this.renderPhotos(venue) : null}
                         </div>
                     </div>
                 </div>
