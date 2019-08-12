@@ -215,3 +215,24 @@ body {
 #review-text {
   font-size: 6em;
 }
+
+#login-modal {
+  display: block;
+}
+
+#venue-show-image {
+}
+
+#nav-bar {
+  display: inline-block;
+}
+
+#show-container {
+  width: 70%;
+  height: 60%;
+
+}
+
+#login-prompt {
+  display: block;
+}
