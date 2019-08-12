@@ -4,8 +4,6 @@ import React from 'react';
 const Background = props => {
     
 
-
-
     const renderBackground = () => {
         if (props.imageUrl) {
             return  <img id="background-image" src={props.imgUrl} alt="background"/>
