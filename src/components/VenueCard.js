@@ -21,16 +21,22 @@ const VenueCard = props => {
                 image_url: venue.image_url,
                 url: venue.url,
             })
-        }).then(resp => resp.json()).then(result => {
+        }).then(resp => resp.json()).then(result => retrieveVenue(venue));
+    }
+    const retrieveVenue = (venue) => {
+        console.log('RETRIEVE VENUE = ', venue)
+        fetch(`http://localhost:3000/venues/${venue.yelp_id}`).then(resp => resp.json()).then(result => {
             props.updateSelectedVenue(result);
-            props.history.push(`/venues/${venue.id}`);
-        });
+            props.history.push(`/venues/${venue.yelp_id}`);
+        })
     }
 
 
     return (
         <div className="columns is-one-quarter" onClick={() => {
-            addVenueToDataBase(venue);
+            //since the yelp_id is assigned once saved to database, if the property exists,
+            //we don't need to make a post request.
+            venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
         }}>
             {/* <span data-label={venue.name} className="is-primary is-top is-medium b-tooltip">
                 <figure className="card image">
