@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Api from '../services/api'
+import lets from '../lets.png'
 
 class Login extends React.Component {
   constructor(props){
@@ -48,9 +49,17 @@ class Login extends React.Component {
                 <form onSubmit={(e)=>{
                     this.handleLogin(e);
                 }}>
-                <input onChange={(e) => this.handleUsernameChange(e)} value={this.state.username} />
-                <input onChange={(e) => this.handlePasswordChange(e)} value={this.state.password} />
-                <input type='submit' value='login'  />
+                  <div id="form-inputs">
+                  <img className="logo" src={lets} alt="logo" />
+                    <div id="input-text">
+                      <label className="login-username">Username</label>
+                      <input className="form-input" onChange={(e) => this.handleUsernameChange(e)} value={this.state.username} />
+                      <br/>
+                      <label className="login-password">Password</label>
+                      <input className="form-input" type="password" onChange={(e) => this.handlePasswordChange(e)} value={this.state.password} />
+                    </div>
+                    <input type='submit' value='login'  />
+                  </div>
                 </form>
             </div>
             <button id="x-button" className="modal-close is-large" aria-label="close" onClick={this.props.loginForm}></button>

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-
+import lets from '../lets.png'
  const NavBar = props => {
 
     const loggedIn = (
@@ -29,9 +29,9 @@ import React from 'react';
 
     return (
         <nav className="navbar is-fixed-top has-shadow">
-            {/* h2 to logo image */}
+            
             <div id='nav-bar' className="breadcrumb is-right">
-                <h2 className="navbar-brand"> LET'S ____  </h2>
+                <img className="logo" src={lets} alt="logo"/>
                 {props.currentUser.id ? loggedIn : notLoggedIn}
             </div>
         </nav>
