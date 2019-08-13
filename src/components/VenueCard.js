@@ -31,6 +31,13 @@ const VenueCard = props => {
         })
     }
 
+    const renderCategories = venue => {
+        const replaced = venue.categories.replace(/=>/g, ':');
+        let categories = JSON.parse(replaced);
+        return categories.map(category => {
+            return <li><a href="#">{category.title}</a></li>
+        })
+    }
 
     return (
         <div className="columns is-one-quarter" onClick={() => {
@@ -38,23 +45,31 @@ const VenueCard = props => {
             //we don't need to make a post request.
             venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
         }}>
-            {/* <span data-label={venue.name} className="is-primary is-top is-medium b-tooltip">
-                <figure className="card image">
-                    <div className="text-container">
-                        <img alt={venue.name} data-src={venue.image_url} src={venue.image_url} lazy="loaded"/>
-                        <div className="bottom-left is-hidden-tablet">{venue.name}</div>
-                    </div>
-                </figure>
-            </span> */}
-
-             <div className="venue-card-image-container">
-                <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+             <div className="blog-card">
+                <img className="photo" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+                <ul className="details">
+                    <li className="tags">
+                        {venue.categories? renderCategories(venue) : null}
+                    </li>
+                </ul>
+                <div className="description">
+                    <h1>{venue.name}</h1>
+                    <p className="summary">Rated {venue.rating} out of 5</p>
+                </div>
             </div>
-            <footer className="card-footer">
-                <p className="card-footer-item">{venue.name}</p>
-                <p className="card-footer-item">{venue.categories ? venue.categories[0].title : 'Food'}</p>
-            </footer>
-    </div>
+        </div>
+    //     <div className="columns is-one-quarter" onClick={() => {
+    //         //since the yelp_id is assigned once saved to database, if the property exists,
+    //         //we don't need to make a post request.
+    //         venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
+    //     }}>
+    //          <div className="venue-card">
+    //             <img className="venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+    //             {/* <p className="venue-card-info">Some text about this venue</p> */}
+    //             <p className="venu-card-name">{venue.name}</p>
+    //             <p className="venu-card-categories">{venue.categories ? renderCategories(venue) : null}</p>
+    //         </div>
+    // </div>
     )
 }
 

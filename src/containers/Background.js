@@ -5,12 +5,13 @@ const Background = props => {
     
 
     const renderBackground = () => {
-        if (props.imageUrl) {
+        if (props.imgUrl) {
             return  <img id="background-image" src={props.imgUrl} alt="background"/>
-        } else {
+        } else if (props.imgUrl === "") {
             return <section id="color-block"></section>
         }
     }
+    console.log(props);
     return (
         <div id="background">
             {renderBackground()}

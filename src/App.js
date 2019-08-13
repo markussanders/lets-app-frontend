@@ -65,7 +65,18 @@ class App extends React.Component {
       .then(venue => this.updateSelectedVenue(venue));
   }
 
+  updateBackgroundImage = imgUrl => {
+    this.setState({imgUrl: imgUrl})
+    console.log(this.state);
+  }
+
+  renderBackground = () => {
+    console.log('here')
+    return <Background imgUrl={this.state.imgUrl} />
+  }
+
   render () {
+    console.log(this.state)
     return (
     <div>
       <Switch> 
@@ -87,7 +98,7 @@ class App extends React.Component {
               }
               />
               <section id="subcontainer">
-                <Background imgUrl={this.state.imgUrl} />
+                {this.renderBackground()}
               </section>
               <section id="topcontainer">
                 {
@@ -102,8 +113,8 @@ class App extends React.Component {
                     this.handleLogin
                   }
                   /> : null}
+                <Suggester updateBackgroundImage={this.updateBackgroundImage} />
                 <SearchBar {...routeProps} updateSearched={this.updateSearched} />
-                <Suggester />
                 <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
               </section>
             </div>
