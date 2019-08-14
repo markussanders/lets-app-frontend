@@ -6,10 +6,11 @@ import SearchBar from './components/SearchBar';
 import NavBar from './components/NavBar';
 import Suggester from './components/Suggester';
 import CardsContainer from './containers/CardsContainer';
-import VenueShow from './components/VenueShow';
+import VenueShow from './containers/VenueShow';
 import Background from './containers/Background';
 import Login from './components/LogIn';
-
+import SavedList from './containers/SavedList';
+import Profile from './containers/Profile';
 
 class App extends React.Component {
 
@@ -20,8 +21,20 @@ class App extends React.Component {
       selectedVenue: null,
       imgUrl: '',
       loginForm: false,
-      auth: { user: {} },
+      auth: { user: {
+        id: 3,
+        username: 'john'
+      } },
     }
+    this.updateState()
+  }
+
+  updateState() {
+    let retrievedUser = JSON.parse(localStorage.getItem('user'));
+    if (retrievedUser) {
+      this.setState({auth: retrievedUser})
+    }
+    return retrievedUser;
   }
 
   updateSearched = searched => {
@@ -32,34 +45,35 @@ class App extends React.Component {
 
   updateSelectedVenue = venue => {
     this.setState({selectedVenue: venue});
-    console.log(this.state);
   }
+
 
   handleLogin = user => {
     this.setState({
       auth: { user }
     })
-    localStorage.setItem('token', user.token);
+    localStorage.setItem('user', JSON.stringify(user))
+    localStorage.setItem('token', user.token)
+    localStorage.setItem('user_id', user.id);
   }
 
   loginForm = () => {
     this.setState({loginForm: !this.state.loginForm});
-    console.log('in login');
   }
 
   handleLogout = user => {
     this.setState({
       auth: { user: {} }
     })
-    localStorage.removeItem('token');
+    localStorage.clear();
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('userId');
   }
 
   signupForm = () => {
-
   }
 
   fetchVenue = (path) => {
-    console.log(`http://localhost:3000${path}`);
     fetch(`http://localhost:3000${path}`)
       .then(resp => resp.json())
       .then(venue => this.updateSelectedVenue(venue));
@@ -67,11 +81,9 @@ class App extends React.Component {
 
   updateBackgroundImage = imgUrl => {
     this.setState({imgUrl: imgUrl})
-    console.log(this.state);
   }
 
   renderBackground = () => {
-    console.log('here')
     return <Background imgUrl={this.state.imgUrl} />
   }
 
@@ -80,78 +92,72 @@ class App extends React.Component {
     return (
     <div>
       <Switch> 
-      <Route exact path='/' render={(routeProps) => <Redirect to = "/home" />}/>
-        <Route exact path='/home' render={(routeProps) => {
-          return (
-            <div>
-              < NavBar currentUser = {
-                this.state.auth.user
-              }
-              loginForm = {
-                this.loginForm
-              }
-              signup = {
-                this.signupForm
-              }
-              handleLogout = {
-                this.handleLogout
-              }
-              />
-              <section id="subcontainer">
-                {this.renderBackground()}
+        <Route exact path='/' render={(routeProps) => <Redirect to = "/home" />}/>
+          <Route exact path='/home' render={(routeProps) => {
+            return (
+              <div>
+                < NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm}handleLogout = {this.handleLogout}/>
+                <section id="subcontainer">
+                  {this.renderBackground()}
+                </section>
+                <section id="topcontainer">
+
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.auth.user} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+
+                  <Suggester updateBackgroundImage={this.updateBackgroundImage} />
+                  <SearchBar {...routeProps} updateSearched={this.updateSearched} />
+                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
+                </section>
+              </div>
+            ) }}
+          />
+          
+          <Route exact path='/venues/:id'  render={(routeProps) => {
+            return (
+              <div>
+                < NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.auth.user} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} currentUser={this.state.auth.user}/>
+              </div>
+            )
+          }} />
+
+          <Route exact path='/users/:id/saved_list' render={(routeProps) => {
+            return (
+              <section id="saved-list-page">
+                <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
+                <SavedList currentUser={this.state.auth.user} />
               </section>
-              <section id="topcontainer">
-                {
-                  this.state.loginForm ? <Login 
-                  currentUser = {
-                    this.state.auth.user
-                  }
-                  loginForm = {
-                    this.loginForm
-                  }
-                  handleLogin = {
-                    this.handleLogin
-                  }
-                  /> : null}
-                <Suggester updateBackgroundImage={this.updateBackgroundImage} />
-                <SearchBar {...routeProps} updateSearched={this.updateSearched} />
-                <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
-              </section>
-            </div>
-          ) }}
-        />
-        <Route exact path='/venues/:id'  render={(routeProps) => {
-          return (
-            <div>
-              < NavBar currentUser = {
-                this.state.auth.user
-              }
-              loginForm = {
-                this.loginForm
-              }
-              signup = {
-                this.signupForm
-              }
-              handleLogout = {
-                this.handleLogout
-              }
-              />
-              {
-                this.state.loginForm ? < Login
-                currentUser = {
-                  this.state.auth.user
-                }
-                loginForm = {
-                  this.loginForm
-                }
-                handleLogin = {
-                  this.handleLogin
-                }
-                /> : null}
-              <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} currentUser={this.state.auth.user}/>
-            </div>
-          )
-        }} />
+            )
+          }} />
+
+          <Route exact path='/users/:id' render={(routeProps) => {
+            return localStorage.getItem('user_id') ?
+                <section id="profile">
+                  <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
+                  <Profile currentUser = {this.state.auth.user} />
+                </section> :
+                <Redirect to='/home'/>
+            }
+          } />
+
+          <Route exact path='/users/:id/saved' render={(routeProps) => {
+            return localStorage.getItem('user_id') ?
+                <section id="saved">
+                  <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
+                  <SavedList currentUser = {this.state.auth.user} />
+                </section> :
+                <Redirect to='/home'/>
+            }
+          } />
      </Switch>
     </div>
   );

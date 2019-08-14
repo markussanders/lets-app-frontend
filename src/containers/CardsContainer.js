@@ -22,6 +22,16 @@ class CardsContainer extends React.Component {
             .then(venues => this.setState({venues}))
     }
 
+    fetchSearches = () => {
+        fetch('http://localhost:3000/searches')
+            .then(resp => resp.json())
+            .then(searches => this.filterSearches(searches));
+    }
+
+    filterSearches = searches => {
+        // searches.filter(searches => {})
+    }
+
     createVenueCards() {
         if (this.props.searched) {
             let venues = this.props.searched.length >= 1 ? this.props.searched : this.state.venues;

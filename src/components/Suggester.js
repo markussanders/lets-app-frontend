@@ -5,8 +5,11 @@ import React from 'react';
 const Suggester = props => {
 
 
+
+
     return (
         <div id="suggester-container">
+            
             <h2 className="title is-3" id="i-want-to">LET'S... </h2>
             <ul id="suggester-options">
                 <li className="suggester-option" id="eat-button" onClick={()=> {
@@ -27,5 +30,6 @@ const Suggester = props => {
     )
 
 }
+
 
 export default Suggester;

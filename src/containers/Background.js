@@ -11,7 +11,6 @@ const Background = props => {
             return <section id="color-block"></section>
         }
     }
-    console.log(props);
     return (
         <div id="background">
             {renderBackground()}

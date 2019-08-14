@@ -2,20 +2,20 @@
 import React from 'react';
 import lets from '../lets.png'
  const NavBar = props => {
-
+     
     const loggedIn = (
-        <div className="navbar-start">
-            <a href="#" className="navbar-item"> Hi, {props.currentUser.username}! </a> 
+        <div id="nav-bar-list" className="navbar-start">
+            < a href={`/users/${props.currentUser.id}`} className = "navbar-item"> Hi, {props.currentUser.username}! </a> 
             <a href="#" className="navbar-item" onClick={() => {
             }}> Home </a> 
-            <a href="#" className="navbar-item" onClick={() => {
+            <a href="/home" className="navbar-item" onClick={() => {
                 props.handleLogout(props.currentUser);
             }}> Logout </a> 
         </div>
     )
 
     const notLoggedIn = (
-        <ul className="breadcrumb is-right" aria-label="breadcrumbs">
+        <ul id="nav-bar-list" className="breadcrumb is-right" aria-label="breadcrumbs">
             <li> <span className="icon is-small"> <i className="fas fa-home" aria-hidden="true"></i></span><a href="/" className="navbar-item"> Home </a> </li>
             <li><a href="/about" className="navbar-item"> About </a></li>
             <li><a href="#" className="navbar-item" onClick={() => {
@@ -31,8 +31,10 @@ import lets from '../lets.png'
         <nav className="navbar is-fixed-top has-shadow">
             
             <div id='nav-bar' className="breadcrumb is-right">
-                <img className="logo" src={lets} alt="logo"/>
-                {props.currentUser.id ? loggedIn : notLoggedIn}
+                <div id="logo-and-nav">
+                    <img className="logo" src={lets} alt="logo"/>
+                    {props.currentUser.id ? loggedIn : notLoggedIn}
+                </div>
             </div>
         </nav>
     )

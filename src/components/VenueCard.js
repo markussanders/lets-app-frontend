@@ -32,29 +32,62 @@ const VenueCard = props => {
     }
 
     const renderCategories = venue => {
-        const replaced = venue.categories.replace(/=>/g, ':');
+        // console.log('venue = ', venue)
+        //Some categories results 
+        if (Array.isArray(venue.categories)) {
+            return venue.categories.map(category => {
+                return <li><a href="/">{category.title}</a></li>
+            })
+        }
+
+        const replaced = String(venue.categories).replace(/=>/g, ':');
         let categories = JSON.parse(replaced);
         return categories.map(category => {
-            return <li><a href="#">{category.title}</a></li>
+            return <li key={""}><a href="/">{category.title}</a></li>
         })
     }
 
+    // const deleteButton = () => {
+    //     return (
+    //         <div className="delete-saved" >
+    //             <button className="delete-saved-button" onClick={() => {
+    //                 props.deleteSaved(venue);
+    //             }}>DELETE</button>
+    //         </div>
+    //     )
+    // }
+    console.log('props=', props.deleteSaved);
     return (
+        
         <div className="columns is-one-quarter" onClick={() => {
             //since the yelp_id is assigned once saved to database, if the property exists,
             //we don't need to make a post request.
-            venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
+            // venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
         }}>
              <div className="blog-card">
                 <img className="photo" src={`${venue.image_url}`} alt={`${venue.name}`}/>
-                <ul className="details">
-                    <li className="tags">
+                <div className="details">
+                    <ul className="tags">
                         {venue.categories? renderCategories(venue) : null}
-                    </li>
-                </ul>
+                    </ul>
+                </div>
                 <div className="description">
                     <h1>{venue.name}</h1>
                     <p className="summary">Rated {venue.rating} out of 5</p>
+                        {props.deleteSaved ?
+                            <div className="delete-saved" >
+                                <button className="delete-saved-button" onClick={() => {
+                                    props.deleteSaved(venue);
+                                }}>DELETE</button>
+                            </div> 
+                        : null}
+                        {props.markCompleted ?
+                            <div className="complete-saved" >
+                                <button className="complete-saved-button" onClick={() => {
+                                    props.markCompleted(venue);
+                                }}>MARK COMPLETE</button>
+                            </div> 
+                        : null}
                 </div>
             </div>
         </div>
