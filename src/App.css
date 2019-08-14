@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
 /* #search-input.input{
   width: 40%;
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
@@ -11,56 +12,6 @@
   max-width: 750px;
 }
 
-/* .random-bg{
-  background-size: cover;
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 30rem;
-} */
-/* 
-#eat-button:hover ~ #image-container {
-  background-size: cover;
-  background-position: absolute;
-  background-repeat: no-repeat;
-  width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-  url(https://cdn.shopify.com/s/files/1/0690/5295/files/dinner_outfits_party_outfit_2048x2048.jpg?687698953360450850);
-}
-#drink-button:hover ~ #image-container {
-  color: white;
-  background-size: cover;
-  background-position: left;
-  background-repeat: no-repeat;
-  width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(https://blogs.bmj.com/bmjopen/files/2016/11/alcohol-492871_960_720.jpg);
-}
-#listen-button:hover ~ #image-container {
-  color: white;
-  background-size: cover;
-  background-position: left;
-  background-repeat: no-repeat;
-  width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(https://media2.giphy.com/media/13ekKst01ih7Vu/source.gif);
-} */
-/* #watch-button:hover ~ #image-container{
-  color: white;
-  background-size: cover;
-  background-position: left;
-  background-repeat: no-repeat;
-  width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(https://www.cityofchicago.org/content/dam/city/depts/dca/Millennium%20Park/mpfilmseries650.jpg);
-} */
-
-/* #image-container {
-  width: 100%;
-  position: absolute;
-  top: 20%;
-  padding: 10%;
-} */
 
 .is-3 .has-text-black {
   margin: 20%;
@@ -76,48 +27,6 @@
   padding: 0;
 }
 
-/* .venue-card {
-  background-color: white;
-  border-radius: 0.25rem;
-  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.venue-card-image {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
-  filter: contrast(70%);
-  overflow: hidden;
-  position: relative;
-  transition: filter 0.5s cubic-bezier(.43, .41, .22, .91);
-
-}
-
-.venue-card-info {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  padding: 1rem;
-}
-.venue-card-name {
-  color: #696969;
-  font-size: 1.25rem;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.venue-card-categories {
-  flex: 1 1 auto;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 1.25rem;
-} */
 
 
 .breadcrumb .navbar-item {
@@ -478,12 +387,58 @@
 }
 
 #saved-list-container {
-  top: 50%;
+  /* top: 50%;
   bottom: 50%;
   margin-top: 20%;
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto;
+  margin-right: auto; */
 }
+
+
+#saved-completed-containers {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10%;
+  flex-wrap: wrap;
+}
+
+#completed-container {
+  background: rgb(248, 248, 248);
+  width: 20%;
+  height: 20%;
+}
+
+#done {
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1em;
+}
+
+
+#your-list {
+  margin-top: 15%;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

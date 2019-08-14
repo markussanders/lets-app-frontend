@@ -56,7 +56,6 @@ const VenueCard = props => {
     //         </div>
     //     )
     // }
-    console.log('props=', props.deleteSaved);
     return (
         
         <div className="columns is-one-quarter" onClick={() => {
