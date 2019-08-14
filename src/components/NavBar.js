@@ -6,7 +6,7 @@ import lets from '../lets.png'
     const loggedIn = (
         <div id="nav-bar-list" className="navbar-start">
             < a href={`/users/${props.currentUser.id}`} className = "navbar-item"> Hi, {props.currentUser.username}! </a> 
-            <a href="#" className="navbar-item" onClick={() => {
+            <a href="/home" className="navbar-item" onClick={() => {
             }}> Home </a> 
             <a href="/home" className="navbar-item" onClick={() => {
                 props.handleLogout(props.currentUser);

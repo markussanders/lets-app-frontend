@@ -42,6 +42,7 @@ class App extends React.Component {
       searched: searched,
     })
   }
+  
 
   updateSelectedVenue = venue => {
     this.setState({selectedVenue: venue});
@@ -110,7 +111,7 @@ class App extends React.Component {
 
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} />
                   <SearchBar {...routeProps} updateSearched={this.updateSearched} />
-                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue}/>
+                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched}/>
                 </section>
               </div>
             ) }}

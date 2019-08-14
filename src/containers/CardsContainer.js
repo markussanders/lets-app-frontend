@@ -32,12 +32,29 @@ class CardsContainer extends React.Component {
         // searches.filter(searches => {})
     }
 
+    updateSearchedC = term => {
+            fetch('http://localhost:3000/searches', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            content: term,
+            user_id: 3, 
+        })
+        })
+        .then(resp => resp.json())
+        .then(results => {
+            this.setState({venues: results});
+            console.log('this.state.results = ', this.state.results)
+        })
+
+    }
+
     createVenueCards() {
         if (this.props.searched) {
             let venues = this.props.searched.length >= 1 ? this.props.searched : this.state.venues;
             let uniqueVenues = uniqBy(venues, 'name')
             return uniqueVenues.map(venue => {
-               return <VenueCard venue={venue} key={venue.id} updateSelectedVenue={this.props.updateSelectedVenue}/>
+               return <VenueCard venue={venue} key={venue.id} updateSelectedVenue={this.props.updateSelectedVenue} updateSearched={this.updateSearchedC}/>
             })
         }
     }

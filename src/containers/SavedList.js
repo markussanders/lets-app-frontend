@@ -9,28 +9,32 @@ class SavedList extends React.Component {
             currentUser: this.props.currentUser,
             savedList: null,
             completed: [],
-            allSaved: [],   
+            incomplete: [],
+            userItems: [],   
         }
     }
 
     componentWillMount() {
-        fetch(`http://localhost:3000/saved_lists`)
-        .then(resp => resp.json())
-        .then(items => {
-            this.setState({allSaved: items});
-            console.log(items)
-            let completed = items.filter(item => item.completed && item.user_id === this.state.currentUser.id);
-            console.log(completed);
-            this.setState({completed});
-        })
         fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
             .then(resp => resp.json())
             .then(user => this.setState({savedList: user.venues}))
+
+        fetch(`http://localhost:3000/saved_lists`)
+        .then(resp => resp.json())
+        .then(items => {
+            console.log(items)
+            let userItems = items.filter(item => item.user_id === this.state.currentUser.id);
+            this.setState({userItems});
+            console.log(userItems);
+            let completed = this.state.userItems.filter(item => item.completed);
+            let incomplete = this.state.userItems.filter(item => !item.completed);
+            this.setState({incomplete, completed})
+        })
     }
 
     deleteSaved = venue => {
-        let target = this.state.allSaved.find(saved => saved.venue_id === venue.id);
-        console.log(venue, target);
+        let target = this.state.incomplete.find(saved => saved.venue_id === venue.id);
+        console.log(venue, this.state.incomplete, target);
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
@@ -44,7 +48,9 @@ class SavedList extends React.Component {
     }
 
     markCompleted = venue => {
-        let target = this.state.allSaved.find(saved => saved.venue_id === venue.id && saved.user_id === this.state.currentUser.id);
+        let target = this.state.incomplete.find(saved => saved.venue_id === venue.id);
+        console.log(venue)
+        console.log(this.state);
         let date = new Date().toLocaleDateString();
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'PATCH',
@@ -55,7 +61,8 @@ class SavedList extends React.Component {
                 completed_on: date,
             })
         }).then(resp => resp.json()).then(result => {
-            this.setState({completed: [...this.state.completed, result.venue]})
+            console.log('RESULT +', result)
+            this.setState({completed: [...this.state.completed, result.saved_list]})
         })
     }
 
@@ -64,22 +71,23 @@ class SavedList extends React.Component {
     }
 
     createVenueCards = () => {
-        let completedIDs = this.state.completed.map(venue => venue.id);
-        let savedIDs = this.state.savedList.map(venue => venue.id);
-        let notCompleted = savedIDs.filter(el => !completedIDs.includes(el) );
-        let venues = this.state.savedList.filter(el => notCompleted.includes(el.id));
+        let incompletedIDs = this.state.incomplete.map(el => el.venue_id);
+        let venues = this.state.savedList.filter(el => incompletedIDs.includes(el.id));
         return venues.map(venue => {
             return <VenueCard venue={venue} key={venue.id} deleteSaved={this.deleteSaved} markCompleted={this.markCompleted}/> 
         })
     }
 
     renderCompleted = () => {
-        return this.state.completed.map(venue =>  {
+        let completedIDs = this.state.completed.map(el => el.venue_id);
+        let venues = this.state.savedList.filter(el => completedIDs.includes(el.id));
+        return venues.map(venue =>  {
             return <Completed key={venue.id} venue={venue} />
         })
     }
 
     render() {
+        console.log(this.state);
         return (
             <div id="saved-list-page">
                 <h2 id="your-list">YOUR LIST</h2>

@@ -5,6 +5,7 @@ import { withRouter} from 'react-router-dom';
 
 const VenueCard = props => {
     const { venue } = props;
+    console.log(props)
 
     const addVenueToDataBase = venue => {
         // send  a post request to backend, save venue, and render its show page
@@ -36,14 +37,18 @@ const VenueCard = props => {
         //Some categories results 
         if (Array.isArray(venue.categories)) {
             return venue.categories.map(category => {
-                return <li><a href="/">{category.title}</a></li>
+                return <li><p onClick={() => {
+                    props.updateSearched(category.title)
+                }}>{category.title}</p></li>
             })
         }
 
         const replaced = String(venue.categories).replace(/=>/g, ':');
         let categories = JSON.parse(replaced);
         return categories.map(category => {
-            return <li key={""}><a href="/">{category.title}</a></li>
+            return <li key={""}><p onClick={() => {
+                props.updateSearched(category.title)
+            }}>{category.title}</p></li>
         })
     }
 

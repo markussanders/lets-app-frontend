@@ -802,12 +802,12 @@ h1, h2, h3 {
   margin-right: 3px;
 }
 
-.blog-card .details a {
+.blog-card .details p {
   color: inherit;
   border-bottom: 1px dotted;
 }
 
-.blog-card .details a:hover {
+.blog-card .details p:hover {
   color: rgb(39, 204, 141);
 }
 
