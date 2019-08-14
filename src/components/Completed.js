@@ -4,7 +4,6 @@ import React from 'react';
 const Completed = props => {
 
     const venue = props.venue;
-    console.log(venue)
     let date = new Date().toLocaleDateString();
 
     return (

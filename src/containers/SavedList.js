@@ -9,27 +9,28 @@ class SavedList extends React.Component {
             currentUser: this.props.currentUser,
             savedList: null,
             completed: [],
-            allSaved: [],
-            
+            allSaved: [],   
         }
     }
 
     componentWillMount() {
+        fetch(`http://localhost:3000/saved_lists`)
+        .then(resp => resp.json())
+        .then(items => {
+            this.setState({allSaved: items});
+            console.log(items)
+            let completed = items.filter(item => item.completed && item.user_id === this.state.currentUser.id);
+            console.log(completed);
+            this.setState({completed});
+        })
         fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
             .then(resp => resp.json())
             .then(user => this.setState({savedList: user.venues}))
-        fetch(`http://localhost:3000/saved_lists`)
-            .then(resp => resp.json())
-            .then(items => {
-                this.setState({allSaved: items})
-                let completed = items.filter(item => item.completed && item.user_id === this.state.currentUser.id);
-                console.log('COMPLETED ===', completed);
-                this.setState({completed});
-            })
     }
 
     deleteSaved = venue => {
         let target = this.state.allSaved.find(saved => saved.venue_id === venue.id);
+        console.log(venue, target);
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
@@ -37,14 +38,13 @@ class SavedList extends React.Component {
                 user_id: this.state.currentUser.id,
                 venue_id: venue.id,
             })
-        }).then(resp => resp.json()).then(console.log)
+        }).then(resp => resp.json()).then(message => {
+            this.setState({savedList: this.state.savedList.filter(el => el.id !== venue.id)})
+        })
     }
 
     markCompleted = venue => {
-        console.log('venue.id = ', venue.id)
-        console.log('this.state =', this.state)
         let target = this.state.allSaved.find(saved => saved.venue_id === venue.id && saved.user_id === this.state.currentUser.id);
-        console.log('target= ', target);
         let date = new Date().toLocaleDateString();
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'PATCH',
@@ -55,41 +55,41 @@ class SavedList extends React.Component {
                 completed_on: date,
             })
         }).then(resp => resp.json()).then(result => {
-            this.setState({completed: [...this.state.completed, result.venue]});
+            this.setState({completed: [...this.state.completed, result.venue]})
         })
     }
 
+    updateState = array => {
+        this.setState({savedList: array})
+    }
+
     createVenueCards = () => {
-       if (this.state.savedList) {
-            return this.state.savedList.map(venue => {
-                return <VenueCard venue={venue} key={venue.id} deleteSaved={this.deleteSaved} markCompleted={this.markCompleted}/>
-            })
-       }
+        let completedIDs = this.state.completed.map(venue => venue.id);
+        let savedIDs = this.state.savedList.map(venue => venue.id);
+        let notCompleted = savedIDs.filter(el => !completedIDs.includes(el) );
+        let venues = this.state.savedList.filter(el => notCompleted.includes(el.id));
+        return venues.map(venue => {
+            return <VenueCard venue={venue} key={venue.id} deleteSaved={this.deleteSaved} markCompleted={this.markCompleted}/> 
+        })
     }
 
     renderCompleted = () => {
-        if (this.state.completed) {
-            return this.state.completed.map(item => {
-                return (
-                    <Completed venue={item}/>
-                )
-            })
-        }
+        return this.state.completed.map(venue =>  {
+            return <Completed key={venue.id} venue={venue} />
+        })
     }
 
-
     render() {
-        console.log(this.state)
         return (
             <div id="saved-list-page">
                 <h2 id="your-list">YOUR LIST</h2>
                 <div id="saved-completed-containers">
-                    < div id = "saved-list-container" >
-                        {this.createVenueCards()}
-                    </div>
                     <div id="completed-container">
                         <h3 id="done">DONE</h3>
-                        {this.renderCompleted()}
+                        {this.state.savedList ? this.renderCompleted() : null}
+                    </div>
+                    < div id = "saved-list-container" >
+                        {this.state.savedList ? this.createVenueCards() : null}
                     </div>
                 </div>
             </div>

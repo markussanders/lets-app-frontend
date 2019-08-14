@@ -58,11 +58,7 @@ const VenueCard = props => {
     // }
     return (
         
-        <div className="columns is-one-quarter" onClick={() => {
-            //since the yelp_id is assigned once saved to database, if the property exists,
-            //we don't need to make a post request.
-            // venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
-        }}>
+        <div className="columns is-one-quarter" >
              <div className="blog-card">
                 <img className="photo" src={`${venue.image_url}`} alt={`${venue.name}`}/>
                 <div className="details">
@@ -79,7 +75,11 @@ const VenueCard = props => {
                                     props.deleteSaved(venue);
                                 }}>DELETE</button>
                             </div> 
-                        : null}
+                        : <button onClick={() => {
+                                //since the yelp_id is assigned once saved to database, if the property exists,
+                                //we don't need to make a post request.
+                                venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
+                            }}>VIEW</button>}
                         {props.markCompleted ?
                             <div className="complete-saved" >
                                 <button className="complete-saved-button" onClick={() => {
