@@ -135,11 +135,11 @@
 }
 
 #venue-show-reviews {
-  margin: 100px;
-  padding: 50px;
+  margin-top: 10%;
+  padding: 3%;
   width: 50%;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: 6%;
   border: solid black 2px;
 }
 
@@ -190,9 +190,77 @@
   background: whitesmoke;
 }
 
+.share-save-buttons {
+  display: inline-block;
+}
 
+#save-button {
+  width: 5%;
+  height: 3%;
+  border: 1px solid rgb(124, 235, 124);
+  font-family: 'Quicksand', sans-serif;
+}
 
+#share-button {
+  width: 5%;
+  height: 3%;
+  border: 1px solid rgb(255, 161, 98);
+  font-family: 'Quicksand', sans-serif;
 
+}
+
+#venue-info-container {
+  display: flex;
+}
+
+.venue-closed {
+  color: rgb(252, 47, 47);
+}
+
+.venue-open {
+  color: rgb(1, 203, 169);
+}
+
+#currently-open-closed,
+#venue-address-text,
+#venue-phone,
+#yelp-link {
+  font-family: 'Quicksand', sans-serif;
+}
+
+#venue-details-container {
+  /* border: 1px solid black; */
+  text-align: right;
+  margin-top: 10%;
+  margin-right: 2%;
+  height: 20%;
+  /* width: 10%; */
+  /* margin-left: 85%; */
+}
+
+#venue-show-details {
+  display: flex;
+  width: 100%;
+}
+
+.back-button-container {
+  font-family: 'Quicksand', sans-serif, bold;
+  max-height: 2%;
+  max-width: 10%;
+  position: fixed;
+  top: 10em;
+  left: 5%;
+  z-index: 1;
+}
+
+.back-button-container img {
+  max-width: 20%;
+  margin-right: 5%;
+}
+
+#hi-user {
+  color: gray;
+}
 
 
 
@@ -421,19 +489,6 @@
   font-family: 'Quicksand', sans-serif;
   font-size: 2em;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

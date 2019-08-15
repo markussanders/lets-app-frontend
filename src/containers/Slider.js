@@ -39,7 +39,6 @@ class Slider extends React.Component {
   render() {
     const { current } = this.state;
     const { slides, heading} = this.props ;
-    console.log(this.props);
     const headingId = `slider-heading__${heading.replace(/\s+/g, '-').toLowerCase()}`
     const wrapperTransform = {
       'transform': `translateX(-${current * (100 / slides.length)}%)`

@@ -1,5 +1,5 @@
 export default {
-    login: (loginData) => {
+    login: async (loginData) => {
         const reqObj = {
             method: 'POST',
             headers: {
@@ -8,11 +8,11 @@ export default {
             body: JSON.stringify(loginData)
         }
 
-        return fetch('http://localhost:3000/api/v1/auth', reqObj)
-            .then(res => res.json())
+        const res = await fetch('http://localhost:3000/api/v1/auth', reqObj);
+        return await res.json();
     },
 
-    currentUser: (token) => {
+    currentUser: async (token) => {
         const reqObj = {
             method: 'GET',
             headers: {
@@ -20,11 +20,11 @@ export default {
             }
         }
 
-        return fetch('http://localhost:3000/api/v1/current_user', reqObj)
-            .then(res => res.json())
+        const res = await fetch('http://localhost:3000/api/v1/current_user', reqObj);
+        return await res.json();
     },
 
-    signup: (signupData) => {
+    signup: async (signupData) => {
         console.log('signupData', signupData)
         const reqObj = {
             method: 'POST',
@@ -33,7 +33,7 @@ export default {
             },
             body: JSON.stringify(signupData)
         }
-        return fetch('http://localhost:3000/users', reqObj)
-            .then(res => res.json())
+        const res = await fetch('http://localhost:3000/users', reqObj);
+        return await res.json();
     }
 }

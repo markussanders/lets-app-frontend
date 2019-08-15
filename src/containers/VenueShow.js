@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from '../containers/Slider';
+import backbutton from '../backbutton.png';
 
 class VenueShow extends React.Component {
 
@@ -10,13 +11,6 @@ class VenueShow extends React.Component {
         };
     }
 
-     renderPhotos = venueInfo => {
-        let photos = JSON.parse(venueInfo.venue.photos);
-        let sliderData = this.sliderData(photos);
-        console.log(sliderData);
-        return <Slider heading={venueInfo.venue.name} slides={sliderData} />
-    }
-
     sliderData = photos => {
         return photos.map(photo => {
             return {
@@ -24,6 +18,43 @@ class VenueShow extends React.Component {
                 src: photo
             }
         })
+    }
+
+     renderPhotos = venueInfo => {
+        let photos = JSON.parse(venueInfo.venue.photos);
+        let sliderData = this.sliderData(photos);
+        return <Slider heading={venueInfo.venue.name} slides={sliderData} />
+    }
+
+    renderPhoneNumber = venueInfo => {
+        let phone = venueInfo.venue.phone;
+        return (
+            <h4 id="venue-phone">
+                <span>{phone}</span>
+            </h4>
+        )
+    }
+
+    renderURL = venueInfo => {
+        let url = venueInfo.venue.url;
+        return (
+            <h6 id="yelp-link"><a href={url} target="blank">VIEW ON YELP</a></h6>
+        )
+    }
+
+    
+    renderAddress = venueInfo => {
+        let location = venueInfo.venue.location.replace(/=>/g, ':');
+        let replaced = location.replace(/nil/g,'""');
+        let locationObj = JSON.parse(replaced);
+        const address = locationObj.display_address.join(' ')
+        return (
+            <h4 id="venue-address-text">
+                <span id="venue-address-text">
+                    {address.toUpperCase()}
+                </span>
+            </h4>
+        )
     }
 
     renderReviews = venue => {
@@ -37,7 +68,6 @@ class VenueShow extends React.Component {
             )
         })
     }
-
 
     saveVenue = () => {
         fetch('http://localhost:3000/saved_lists', {
@@ -53,6 +83,7 @@ class VenueShow extends React.Component {
     render () {
         const venueInfo = this.state.venue;
         console.log(venueInfo);
+        console.log(this.props.history.goBack)
         /// If save button is chosen to be visible to those not logged in, if they are not logged in, then return this prompt.
         // const loginPrompt = (
         //     <div class="modal" id="login-prompt">
@@ -71,46 +102,33 @@ class VenueShow extends React.Component {
                 <div id="venue-show-name">
                     <h2 id="venue-name">{venueInfo ? venueInfo.venue.name.toUpperCase() : null}</h2>
                 </div>
+                <div className="back-button-container"><img src={backbutton} alt="" className="back-button" onClick={() => this.props.history.goBack()}/>GO BACK</div>
                 <div id="venue-show-other-images">
                     {this.state.venue && this.state.venue.venue.photos ? this.renderPhotos(venueInfo) : null}
                 </div>
-                <div id="venue-show-reviews">
-                    <h4 id="yelp-reviews">YELP REVIEWS</h4> 
-                    {venueInfo && venueInfo.reviews ? this.renderReviews(venueInfo) : <p> No reviews available </p>}  
+                <div id="venue-show-info-container">
+                <div id="venue-show-details">
+                        <div id="venue-show-reviews">
+                            <h4 id="yelp-reviews">YELP REVIEWS</h4> 
+                            {venueInfo && venueInfo.reviews ? this.renderReviews(venueInfo) : <p> No reviews available </p>}  
+                        </div>
+                    < div id="venue-details-container" >
+                        <h2 id="currently-open-closed">CURRENTLY {venueInfo ? venueInfo.venue.open ? 
+                            <span className="venue-open">OPEN</span> 
+                            :
+                             <span className="venue-closed">CLOSED</span> : null}
+                        </h2>
+                        {this.renderPhoneNumber(venueInfo)}
+                        {this.renderAddress(venueInfo)}
+                        {this.renderURL(venueInfo)}
+                    </div>
+                    </div>
                 </div>
-                <div id="save-button" className="card">
-                    {this.props.currentUser.id ? <h4 onClick={ () => {this.saveVenue()}}>Save</h4> : null}
-                    <h4 id="share-button">Share</h4>
+                <div className="share-save-buttons">
+                    {this.props.currentUser.id ? <h4 id="save-button" onClick={ () => {this.saveVenue()}}>SAVE</h4> : null}
+                    <h4 id="share-button">SHARE</h4>
                 </div>
             </div>
-
-
-            // <div id="show-container" className="tile is-ancestor">
-            //   <div className="tile is-6 is-parent">
-            //     <div className="tile is-child-box">
-            //         <img className="image" id="venue-show-image" src={venue.venue.image_url} alt={venue.venue.name}/>
-            //         <div id="save-button" class="card">
-            //             {this.props.currentUser.id ? <h4 onClick={ () => {this.saveVenue()}}>Save</h4> : null}
-            //             <h4>Share</h4>
-            //         </div>
-            //     </div>
-            //   </div>
-            //     <div className="tile is-6 is-vertical is-parent is right">
-            //         <div className="tile is-child box">
-            //             <p className="title">{venue.name}</p>
-            //             <p className="subtitle is-5">Currently {venue.open ? "open" : 'closed'}</p>
-            //             <p className="subtitle is-5">{venue.phone}</p>
-            //         </div>
-            //         <div className="tile is-child box">
-            //             <div>
-            //                 {this.state.venue && this.state.venue.reviews ? this.renderReviews(venue) : <p> No reviews available </p>}
-            //                 {this.state.venue && this.state.venue.venue.photos ? this.renderPhotos(venue) : <p> No additional photos</p>}
-            //             </div>
-            //             <div id="save-button">
-            //         </div>
-            //         </div>
-            //     </div>
-            // </div>
         )
     }
 }

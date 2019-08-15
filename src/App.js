@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect, Switch} from 'react-router-dom';
+// import { browserHistory } from 'react-router';
 import '../node_modules/bulma/css/bulma.css';
 import './App.css';
 import SearchBar from './components/SearchBar';
@@ -136,7 +137,7 @@ class App extends React.Component {
                   : 
                     null
                   }                 
-                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} currentUser={this.state.auth.user}/>
+                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.auth.user}/>
               </div>
             )
           }} />

@@ -51,22 +51,19 @@ class Signup extends React.Component {
 
     handleSignup(e){
         e.preventDefault();
-        console.log('HERE')
-        if (this.state.password) {
-            Api.signup(this.state)
-            .then(data => {
-                console.log('DATA =', data)
-                if (data.error) {
-                this.setState({
-                    error: true,
-                    errorMessage: data.error,
-                })
-                } else {
-                this.props.handleSignup(data);
-                this.props.signupForm();
-                }
+        Api.signup(this.state)
+        .then(data => {
+            console.log('DATA =', data)
+            if (data.error) {
+            this.setState({
+                error: true,
+                errorMessage: data.error,
             })
-        }
+            } else {
+            this.props.handleSignup(data);
+            this.props.signupForm();
+            }
+        })
     }
 
     render(){
@@ -81,7 +78,7 @@ class Signup extends React.Component {
                   <div id="form-inputs">
                   <img className="logo" src={lets} alt="logo" />
                     <div id="input-text">
-                {this.state.error ? <h4>{this.state.errorMessage}</h4> : null}
+                    {this.state.error ? <h4>{this.state.errorMessage}</h4> : null}
                       <label className="login-username">First Name</label>
                       <input className="form-input" onChange={(e) => this.handleNameChange(e)} value={this.state.name} />
                       <br/>
