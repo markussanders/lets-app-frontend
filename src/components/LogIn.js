@@ -1,7 +1,7 @@
 
 import React from 'react';
-import Api from '../services/api'
-import lets from '../lets.png'
+import Api from '../services/api';
+import lets from '../lets.png';
 
 class Login extends React.Component {
   constructor(props){

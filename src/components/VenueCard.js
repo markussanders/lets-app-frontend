@@ -5,7 +5,6 @@ import { withRouter} from 'react-router-dom';
 
 const VenueCard = props => {
     const { venue } = props;
-    console.log(props)
 
     const addVenueToDataBase = venue => {
         // send  a post request to backend, save venue, and render its show page

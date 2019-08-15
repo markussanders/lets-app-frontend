@@ -2,6 +2,7 @@
 import React from 'react';
 import lets from '../lets.png'
  const NavBar = props => {
+
      
     const loggedIn = (
         <div id="nav-bar-list" className="navbar-start">

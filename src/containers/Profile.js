@@ -6,7 +6,7 @@ class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: this.props.currentUser,
+            currentUser: (this.props.currentUser || JSON.parse(localStorage.getItem('user'))),
         }
     }
 

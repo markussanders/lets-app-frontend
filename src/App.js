@@ -11,6 +11,7 @@ import Background from './containers/Background';
 import Login from './components/LogIn';
 import SavedList from './containers/SavedList';
 import Profile from './containers/Profile';
+import Signup from './components/Signup';
 
 class App extends React.Component {
 
@@ -21,20 +22,15 @@ class App extends React.Component {
       selectedVenue: null,
       imgUrl: '',
       loginForm: false,
-      auth: { user: {
-        id: 3,
-        username: 'john'
-      } },
+      signupForm: false,
+      auth: { user: {}},
+      currentUser: false,
     }
-    this.updateState()
   }
 
-  updateState() {
-    let retrievedUser = JSON.parse(localStorage.getItem('user'));
-    if (retrievedUser) {
-      this.setState({auth: retrievedUser})
-    }
-    return retrievedUser;
+  componentWillMount() {
+    let retrievedUser = localStorage.length > 0 ? JSON.parse(localStorage.user) : false;
+    this.setState({currentUser: retrievedUser})
   }
 
   updateSearched = searched => {
@@ -58,8 +54,16 @@ class App extends React.Component {
     localStorage.setItem('user_id', user.id);
   }
 
+  handleSignup = () => {
+    this.setState({loginForm: true});
+  }
+
   loginForm = () => {
     this.setState({loginForm: !this.state.loginForm});
+  }
+  
+  signupForm = () => {
+    this.setState({signupForm: !this.state.signupForm});
   }
 
   handleLogout = user => {
@@ -69,9 +73,6 @@ class App extends React.Component {
     localStorage.clear();
     // localStorage.removeItem('token');
     // localStorage.removeItem('userId');
-  }
-
-  signupForm = () => {
   }
 
   fetchVenue = (path) => {
@@ -89,7 +90,6 @@ class App extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     return (
     <div>
       <Switch> 
@@ -97,21 +97,26 @@ class App extends React.Component {
           <Route exact path='/home' render={(routeProps) => {
             return (
               <div>
-                < NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm}handleLogout = {this.handleLogout}/>
+                < NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm}handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
                 <section id="subcontainer">
                   {this.renderBackground()}
                 </section>
                 <section id="topcontainer">
 
                   {this.state.loginForm ? 
-                    <Login currentUser = {this.state.auth.user} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
                   : 
                     null
                   }
 
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} />
                   <SearchBar {...routeProps} updateSearched={this.updateSearched} />
-                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched}/>
+                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup}/>
                 </section>
               </div>
             ) }}
@@ -120,12 +125,17 @@ class App extends React.Component {
           <Route exact path='/venues/:id'  render={(routeProps) => {
             return (
               <div>
-                < NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
-                  {this.state.loginForm ? 
-                    <Login currentUser = {this.state.auth.user} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                < NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                  {this.state.signupForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
                   : 
                     null
                   }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                  : 
+                    null
+                  }                 
                 <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} currentUser={this.state.auth.user}/>
               </div>
             )
@@ -134,8 +144,18 @@ class App extends React.Component {
           <Route exact path='/users/:id/saved_list' render={(routeProps) => {
             return (
               <section id="saved-list-page">
-                <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
-                <SavedList currentUser={this.state.auth.user} />
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                    : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                    : 
+                    null
+                  }
+                  <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                <SavedList currentUser={this.state.currentUser} />
               </section>
             )
           }} />
@@ -143,8 +163,18 @@ class App extends React.Component {
           <Route exact path='/users/:id' render={(routeProps) => {
             return localStorage.getItem('user_id') ?
                 <section id="profile">
-                  <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
-                  <Profile currentUser = {this.state.auth.user} />
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                  : 
+                    null
+                  }
+                  <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                  <Profile currentUser = {this.state.currentUser} />
                 </section> :
                 <Redirect to='/home'/>
             }
@@ -153,8 +183,18 @@ class App extends React.Component {
           <Route exact path='/users/:id/saved' render={(routeProps) => {
             return localStorage.getItem('user_id') ?
                 <section id="saved">
-                  <NavBar currentUser = {this.state.auth.user} loginForm = {this.loginForm} signup = {this.signupForm} handleLogout = {this.handleLogout}/>
-                  <SavedList currentUser = {this.state.auth.user} />
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                  : 
+                    null
+                  }
+                  <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                  <SavedList currentUser = {this.state.currentUser} />
                 </section> :
                 <Redirect to='/home'/>
             }

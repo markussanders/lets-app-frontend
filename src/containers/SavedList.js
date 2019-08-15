@@ -6,7 +6,7 @@ class SavedList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: this.props.currentUser,
+            currentUser: JSON.parse(localStorage.user),
             savedList: null,
             completed: [],
             incomplete: [],
@@ -87,17 +87,16 @@ class SavedList extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div id="saved-list-page">
                 <h2 id="your-list">YOUR LIST</h2>
                 <div id="saved-completed-containers">
+                    < div id = "saved-list-container" >
+                        {this.state.savedList ? this.createVenueCards() : null}
+                    </div>
                     <div id="completed-container">
                         <h3 id="done">DONE</h3>
                         {this.state.savedList ? this.renderCompleted() : null}
-                    </div>
-                    < div id = "saved-list-container" >
-                        {this.state.savedList ? this.createVenueCards() : null}
                     </div>
                 </div>
             </div>
