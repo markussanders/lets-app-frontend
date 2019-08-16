@@ -21,11 +21,13 @@ class App extends React.Component {
     this.state = {
       searched: [],
       selectedVenue: null,
-      imgUrl: '',
+      imgUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAC3CAMAAAAGjUrGAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBgxUwAAU+n3sIAAAAASUVORK5CYII=',
       loginForm: false,
       signupForm: false,
       auth: { user: {}},
       currentUser: false,
+      currentUserMostSearched: false,
+      mostFrequent: [],
     }
   }
 
@@ -39,12 +41,10 @@ class App extends React.Component {
       searched: searched,
     })
   }
-  
 
   updateSelectedVenue = venue => {
     this.setState({selectedVenue: venue});
   }
-
 
   handleLogin = user => {
     this.setState({
@@ -79,18 +79,20 @@ class App extends React.Component {
   fetchVenue = (path) => {
     fetch(`http://localhost:3000${path}`)
       .then(resp => resp.json())
-      .then(venue => this.updateSelectedVenue(venue));
+      .then(venue => {
+        this.setState({currentUserMostSearched: false})
+        this.updateSelectedVenue(venue)
+      });
   }
 
   updateBackgroundImage = imgUrl => {
     this.setState({imgUrl: imgUrl})
   }
 
-  renderBackground = () => {
-    return <Background imgUrl={this.state.imgUrl} />
-  }
+
 
   render () {
+    
     return (
     <div>
       <Switch> 
@@ -100,7 +102,7 @@ class App extends React.Component {
               <div>
                 < NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm}handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
                 <section id="subcontainer">
-                  {this.renderBackground()}
+                  {/* {this.renderBackground()} */}
                 </section>
                 <section id="topcontainer">
 
@@ -114,9 +116,9 @@ class App extends React.Component {
                   : 
                     null
                   }
-
-                  <Suggester updateBackgroundImage={this.updateBackgroundImage} />
-                  <SearchBar {...routeProps} updateSearched={this.updateSearched} />
+                  <Background imgUrl={this.state.imgUrl} />
+                  <Suggester updateBackgroundImage={this.updateBackgroundImage} updateSearched={this.updateSearched} currentUser={this.state.currentUser} />
+                  <SearchBar {...routeProps} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
                   <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup}/>
                 </section>
               </div>
@@ -156,7 +158,7 @@ class App extends React.Component {
                     null
                   }
                   <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
-                <SavedList currentUser={this.state.currentUser} />
+                <SavedList currentUser={this.state.currentUser} history={routeProps.history} />
               </section>
             )
           }} />
@@ -175,7 +177,7 @@ class App extends React.Component {
                     null
                   }
                   <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
-                  <Profile currentUser = {this.state.currentUser} />
+                  <Profile currentUser = {this.state.currentUser} history={routeProps.history} />
                 </section> :
                 <Redirect to='/home'/>
             }
@@ -195,7 +197,7 @@ class App extends React.Component {
                     null
                   }
                   <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
-                  <SavedList currentUser = {this.state.currentUser} />
+                  <SavedList currentUser = {this.state.currentUser} history={routeProps.history} />
                 </section> :
                 <Redirect to='/home'/>
             }

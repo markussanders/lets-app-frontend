@@ -71,7 +71,7 @@ const VenueCard = props => {
                     </ul>
                 </div>
                 <div className="description">
-                    <h1>{venue.name}</h1>
+                    <h1 className="venue-card-name">{venue.name}</h1>
                     <p className="summary">Rated {venue.rating} out of 5</p>
                         {props.deleteSaved ?
                             <div className="delete-saved" >
@@ -79,11 +79,13 @@ const VenueCard = props => {
                                     props.deleteSaved(venue);
                                 }}>DELETE</button>
                             </div> 
-                        : <button onClick={() => {
+                        : <div className="card-body"><button className="view-button" onClick={() => {
                                 //since the yelp_id is assigned once saved to database, if the property exists,
                                 //we don't need to make a post request.
                                 venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
-                            }}>VIEW</button>}
+                            }}>MORE DETAILS</button>
+                                <br/><br/><br/><br/>           
+                            </div>}
                         {props.markCompleted ?
                             <div className="complete-saved" >
                                 <button className="complete-saved-button" onClick={() => {

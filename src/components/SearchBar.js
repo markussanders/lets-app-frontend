@@ -11,6 +11,9 @@ class Search extends Component {
       results: [],
     }
   }
+  componentDidMount() {
+    
+  }
 
   getInfo = () => {
     fetch('http://localhost:3000/searches', {
@@ -18,7 +21,7 @@ class Search extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         content: this.state.query,
-        user_id: 1, 
+        user_id: (this.props.currentUser.id || 1), 
       })
     })
       .then(resp => resp.json())
@@ -48,7 +51,6 @@ class Search extends Component {
     return (
       <section className="tile is-5 is-parent" id="search">
           <form 
-          // className="input"
           id="search-from"
           onSubmit={(e) => {
             e.preventDefault()
@@ -62,7 +64,8 @@ class Search extends Component {
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-          <input className="button is-dark" id="search-submit" type='submit' name='submit' />
+          <button className="button is-dark" id="search-submit" type='submit' name='submit'>Search</button>
+          <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button>
         </form>
       </section>
     )

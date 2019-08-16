@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import backbutton from '../backbutton.png';
 
 class Profile extends React.Component {
 
@@ -13,28 +14,31 @@ class Profile extends React.Component {
     render() {
         console.log(this.state.currentUser);
         return (
-            <div id="profile-sections">
-                <div id="profile-your-account" className="profile-section">
-                    <h2 id="your-account-text"> YOUR ACCOUNT</h2>
-                </div>
-                <div id="profile-update" className="profile-section">
-                    <h4> view my: 
-                        <Link to={`/users/${this.state.currentUser.id}/saved`}>
-                             <span className="profile-option">saved</span>
-                        </Link>
-                    </h4>
-                </div>
-                <div id="profile-change" className="profile-section">
-                    <h4> change my: 
-                        <div className="profile-stacked">
-                            <span className="profile-option">username</span>
-                            <span className="profile-option">password</span>
-                            <span className="profile-option-disabled">{"location (coming soon!)"}</span>
-                        </div>
-                    </h4>
-                </div>
-                <div id="profile-delete" className="profile-section">
-                    <h4> delete my: <span className="profile-option">account</span></h4>
+            <div>
+                <div className="back-button-container"><img src={backbutton} alt="" className="back-button" onClick={() => this.props.history.goBack()}/>GO BACK</div>
+                <div id="profile-sections">
+                    <div id="profile-your-account" className="profile-section">
+                        <h2 id="your-account-text"> YOUR ACCOUNT</h2>
+                    </div>
+                    <div id="profile-update" className="profile-section">
+                        <h4> view my: 
+                            <Link to={`/users/${this.state.currentUser.id}/saved`}>
+                                <span className="profile-option">saved</span>
+                            </Link>
+                        </h4>
+                    </div>
+                    <div id="profile-change" className="profile-section">
+                        <h4> change my: 
+                            <div className="profile-stacked">
+                                <span className="profile-option">username</span>
+                                <span className="profile-option">password</span>
+                                <span className="profile-option-disabled">{"location (coming soon!)"}</span>
+                            </div>
+                        </h4>
+                    </div>
+                    <div id="profile-delete" className="profile-section">
+                        <h4> delete my: <span className="profile-option">account</span></h4>
+                    </div>
                 </div>
             </div>
         )
