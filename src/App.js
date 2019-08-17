@@ -8,6 +8,7 @@ import NavBar from './components/NavBar';
 import Suggester from './components/Suggester';
 import CardsContainer from './containers/CardsContainer';
 import VenueShow from './containers/VenueShow';
+import EventShow from './containers/EventShow';
 import Background from './containers/Background';
 import Login from './components/LogIn';
 import SavedList from './containers/SavedList';
@@ -21,6 +22,7 @@ class App extends React.Component {
     this.state = {
       searched: [],
       selectedVenue: null,
+      selectedEvent: null,
       imgUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAC3CAMAAAAGjUrGAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBgxUwAAU+n3sIAAAAASUVORK5CYII=',
       loginForm: false,
       signupForm: false,
@@ -28,6 +30,7 @@ class App extends React.Component {
       currentUser: false,
       currentUserMostSearched: false,
       mostFrequent: [],
+      events: false,
     }
   }
 
@@ -36,14 +39,19 @@ class App extends React.Component {
     this.setState({currentUser: retrievedUser})
   }
 
-  updateSearched = searched => {
+  updateSearched = childState => {
+    console.log('CHILD STATE =', childState)
     this.setState({
-      searched: searched,
+      searched: childState.results,
+      events: childState.events
     })
   }
 
   updateSelectedVenue = venue => {
     this.setState({selectedVenue: venue});
+  }
+  updatedSelectedEvent = event => {
+    this.setState({selectedEvent: event})
   }
 
   handleLogin = user => {
@@ -84,15 +92,24 @@ class App extends React.Component {
         this.updateSelectedVenue(venue)
       });
   }
+  fetchEvent = (path) => {
+    fetch(`http://localhost:3000${path}`)
+      .then(resp => resp.json())
+      .then(event => {
+        this.setState({
+          currentUserMostSearched: false
+        })
+        this.updateSelectedEvent(event)
+      });
+  }
 
   updateBackgroundImage = imgUrl => {
     this.setState({imgUrl: imgUrl})
   }
 
 
-
   render () {
-    
+    console.log(this.state);
     return (
     <div>
       <Switch> 
@@ -119,7 +136,7 @@ class App extends React.Component {
                   <Background imgUrl={this.state.imgUrl} />
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} updateSearched={this.updateSearched} currentUser={this.state.currentUser} />
                   <SearchBar {...routeProps} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
-                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup}/>
+                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
                 </section>
               </div>
             ) }}
@@ -140,6 +157,25 @@ class App extends React.Component {
                     null
                   }                 
                 <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.auth.user}/>
+              </div>
+            )
+          }} />
+
+          <Route exact path='/events/:id'  render={(routeProps) => {
+            return (
+              <div>
+                < NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                  {this.state.signupForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                  : 
+                    null
+                  }                 
+                <EventShow event={(this.state.selectedEvent || this.fetchEvent(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.auth.user}/>
               </div>
             )
           }} />

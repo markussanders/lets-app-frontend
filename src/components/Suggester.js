@@ -10,6 +10,7 @@ class Suggester extends React.Component {
             currentUser: this.props.currentUser,
             currentUserMostSearched: false,
             mostFrequent: '',
+            events: false,
         };
         this.fetchSearches();
     }
@@ -18,16 +19,20 @@ class Suggester extends React.Component {
         switch (term) {
 
             case 'food':
-                let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nacho', 'hotdog', 'fries', 'ice cream', 'burrito'];
-                this.search(foods[Math.floor(Math.random() * foods.length)]);
+              this.setState({events: false});
+              let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nacho', 'hotdog', 'fries', 'ice cream', 'burrito'];
+              this.search(foods[Math.floor(Math.random() * foods.length)]);
             break;
 
             case 'bars':
-                let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
-                this.search(bars[Math.floor(Math.random() * bars.length)]);
+              this.setState({events: false});
+              let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
+              this.search(bars[Math.floor(Math.random() * bars.length)]);
             break;
 
             case 'concerts':
+              this.setState({events: true});
+              this.search('music');
             break;
 
             case 'restaurants': 
@@ -71,20 +76,21 @@ class Suggester extends React.Component {
     } 
   }
 
-  search = (content=this.state.mostFrequent) => {
+  search = async (content=this.state.mostFrequent) => {
     console.log(this.state);
     console.log(content);
-     fetch('http://localhost:3000/searches', {
+     const resp = await fetch('http://localhost:3000/searches', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: content,
-        user_id: (this.state.currentUser.id || 1), 
+        user_id: (this.state.currentUser.id || 1),
+        is_event: this.state.events,
       })
-    }).then(resp => resp.json()).then(result => this.props.updateSearched(result))
+    });
+    const result = await resp.json();
+    return result;
   }
-
-
 
     render() {
         return (

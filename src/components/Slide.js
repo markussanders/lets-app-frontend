@@ -3,15 +3,10 @@ import React from 'react';
 class Slide extends React.Component {
   constructor(props) {
     super(props)
-
-    this.handleMouseMove = this.handleMouseMove.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
-    this.handleSlideClick = this.handleSlideClick.bind(this)
-    this.imageLoaded = this.imageLoaded.bind(this)
     this.slide = React.createRef()
   }
   
-  handleMouseMove(event) {
+  handleMouseMove = (event) => {
     const el = this.slide.current
     const r = el.getBoundingClientRect()
 
@@ -19,16 +14,16 @@ class Slide extends React.Component {
     el.style.setProperty('--y', event.clientY - (r.top + Math.floor(r.height / 2)))
   }
   
-  handleMouseLeave(event) {    
+  handleMouseLeave = (event) => {    
     this.slide.current.style.setProperty('--x', 0)
     this.slide.current.style.setProperty('--y', 0)
   }
   
-  handleSlideClick(event) {
+  handleSlideClick = (event) => {
     this.props.handleSlideClick(this.props.slide.index)
   }
   
-  imageLoaded(event) {
+  imageLoaded = (event) => {
     event.target.style.opacity = 1
   }
   
@@ -57,9 +52,6 @@ class Slide extends React.Component {
             onLoad={this.imageLoaded}
           />
         </div>
-        
-        {/* <article className="slide__content">
-        </article> */}
       </li>
     )
   }

@@ -9,26 +9,26 @@ class Search extends Component {
     this.state = {
       query: '',
       results: [],
+      events: true,
     }
-  }
-  componentDidMount() {
-    
   }
 
   getInfo = () => {
+    console.log('AT GETINFO ',this.state);
     fetch('http://localhost:3000/searches', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         content: this.state.query,
-        user_id: (this.props.currentUser.id || 1), 
+        user_id: (this.props.currentUser.id || 1),
+        is_event: this.state.events, 
       })
     })
       .then(resp => resp.json())
       .then(results => {
-         this.setState({results});
-        console.log('this.state.results = ', this.state.results)
-        this.props.updateSearched(this.state.results);
+        this.setState({results});
+        console.log('this.state = ', this.state)
+        this.props.updateSearched(this.state);
       })
   }
   
@@ -46,6 +46,7 @@ class Search extends Component {
     // })
     )
   }
+
   
   render() {
     return (
@@ -53,8 +54,8 @@ class Search extends Component {
           <form 
           id="search-from"
           onSubmit={(e) => {
-            e.preventDefault()
-            return this.getInfo()
+            e.preventDefault();
+            return this.getInfo(this.state.events);
           }} 
         >
           <input
@@ -64,8 +65,9 @@ class Search extends Component {
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-          <button className="button is-dark" id="search-submit" type='submit' name='submit'>Search</button>
-          <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button>
+          <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
+          <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>
+          {/* <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button> */}
         </form>
       </section>
     )

@@ -1,6 +1,7 @@
 import React from 'react';
 import VenueCard from '../components/VenueCard';
 import uniqBy from 'lodash/uniqBy';
+import EventCard from '../components/EventCard';
 
 
 class CardsContainer extends React.Component {
@@ -33,13 +34,13 @@ class CardsContainer extends React.Component {
     }
 
     updateSearchedC = term => {
-            fetch('http://localhost:3000/searches', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            content: term,
-            user_id: 3, 
-        })
+        fetch('http://localhost:3000/searches', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                content: term,
+                user_id: 3, 
+            })
         })
         .then(resp => resp.json())
         .then(results => {
@@ -59,12 +60,24 @@ class CardsContainer extends React.Component {
         }
     }
 
+    createEventCards() {
+        if (this.props.searched) {
+            let events = this.props.searched;
+            let uniqueEvents = uniqBy(events, 'description')
+            uniqueEvents = uniqBy(uniqueEvents, 'business_id')
+            console.log('UNIQUE EVENT = ', uniqueEvents);
+            return uniqueEvents.map(event => {
+                return <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} />
+            })
+        }
+    }
+
     render() {
         return (
             <div className="" id="cards-container">
                 <h1 className="Title">Trending</h1>
                 <div className="columns is-multiline is-mobile is-centered">
-                    {this.createVenueCards()}
+                    {this.props.selectedEvents ? this.createEventCards() : this.createVenueCards()}
                 </div>
             </div>
         )
