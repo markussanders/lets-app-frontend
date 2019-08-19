@@ -14,7 +14,7 @@ class SavedList extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
             .then(resp => resp.json())
             .then(user => this.setState({savedList: user.venues}))
@@ -62,7 +62,10 @@ class SavedList extends React.Component {
             })
         }).then(resp => resp.json()).then(result => {
             console.log('RESULT +', result)
-            this.setState({completed: [...this.state.completed, result.saved_list]})
+            this.setState({
+                completed: [...this.state.completed, result.saved_list],
+                incomplete: this.state.incomplete.filter(el => el.venue_id !== result.venue.id)
+            })
         })
     }
 

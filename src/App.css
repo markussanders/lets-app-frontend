@@ -477,11 +477,10 @@
 }
 
 #saved-list-container {
-  /* top: 50%;
-  bottom: 50%;
-  margin-top: 20%;
-  /* margin-left: auto;
-  margin-right: auto; */
+  height: 25em;
+  overflow: scroll;
+  border: dotted 1px black;
+  border-radius: 20px;
 }
 
 
@@ -490,12 +489,14 @@
   justify-content: space-evenly;
   margin-top: 10%;
   flex-wrap: wrap;
+  margin-bottom: 10%;
 }
 
 #completed-container {
   background: rgb(248, 248, 248);
   width: 20%;
   height: 20%;
+  border-radius: 20px;
 }
 
 #done {

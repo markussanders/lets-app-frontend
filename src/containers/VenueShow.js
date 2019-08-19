@@ -7,6 +7,7 @@ class VenueShow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUser: this.props.currentUser,
             venue: this.props.venue,
         };
     }
@@ -82,8 +83,6 @@ class VenueShow extends React.Component {
     
     render () {
         const venueInfo = this.state.venue;
-        console.log(venueInfo);
-        console.log(this.props.history.goBack)
         /// If save button is chosen to be visible to those not logged in, if they are not logged in, then return this prompt.
         // const loginPrompt = (
         //     <div class="modal" id="login-prompt">
@@ -94,6 +93,7 @@ class VenueShow extends React.Component {
         //         <button class="modal-close is-large" aria-label="close"></button>
         //     </div>
         // )
+        console.log("state =", this.state)
         return (
             <div id="venue-show-page">
                 {/* <div id="venue-show-main-image">
@@ -125,7 +125,7 @@ class VenueShow extends React.Component {
                     </div>
                 </div>
                 <div className="share-save-buttons">
-                    {this.props.currentUser.id ? <h4 id="save-button" onClick={ () => {this.saveVenue()}}>SAVE</h4> : null}
+                    {this.state.currentUser.id ? <h4 id="save-button" onClick={ () => {this.saveVenue()}}>SAVE</h4> : null}
                     <h4 id="share-button">SHARE</h4>
                 </div>
             </div>

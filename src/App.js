@@ -112,7 +112,6 @@ class App extends React.Component {
   }
 
   render () {
-    console.log(this.state);
     return (
     <div>
       <Switch> 
@@ -159,7 +158,7 @@ class App extends React.Component {
                   : 
                     null
                   }                 
-                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.auth.user}/>
+                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.currentUser}/>
               </div>
             )
           }} />
@@ -178,7 +177,7 @@ class App extends React.Component {
                   : 
                     null
                   }                 
-                <EventShow event={(this.state.selectedEvent || this.fetchEvent(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.auth.user}/>
+                <EventShow event={(this.state.selectedEvent || this.fetchEvent(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.currentUser}/>
               </div>
             )
           }} />
