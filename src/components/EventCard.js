@@ -54,7 +54,8 @@ const EventCard = props => {
                 <div className="description">
                     <h1 className="venue-card-name">{event.name}</h1>
                     <h2>{renderCost(event)}</h2>
-                    <p className="summary">{`${event.description.substring(0, 45)}...`}</p>
+                    {/* <p className="summary">{`${event.description.substring(0, 45)}...`}</p> */}
+                    <button className="view-button-event" onClick={() => addEventToDataBase(event)}>MORE DETAILS</button>
                 </div>
                  {props.deleteSaved ?
                     <div className="delete-saved" >
@@ -62,12 +63,7 @@ const EventCard = props => {
                             props.deleteSaved(event);
                         }}>DELETE</button>
                     </div> 
-                : 
-                    <div className="card-body"><button className="view-button" onClick={() => {
-                            addEventToDataBase(event);
-                        }}>MORE DETAILS</button>
-                        {/* <br/><br/><br/><br/>            */}
-                    </div>}
+                : null}
                 {props.markCompleted ?
                     <div className="complete-saved" >
                         <button className="complete-saved-button" onClick={() => {

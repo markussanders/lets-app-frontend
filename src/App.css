@@ -60,7 +60,7 @@
 #background {
   margin-top: 5%;
   width: 100%;
-  height: 30em;
+  height: 35em;
 }
 
 #background-image {
@@ -68,7 +68,8 @@
   height: 100%;
   opacity: 0.6;
   object-fit: cover;
-  transition: ease-in;
+  transition: ease-in-out 2s;
+  object-position: 50% 30%;
 }
 
 #subcontainer {
@@ -271,10 +272,19 @@
   font-family: 'Quicksand', sans-serif, bold;
   font-size: 1em;
 }
+.view-button-event {
+  border: none;
+  right: 0;
+  margin-left: 50%;
+  margin-top: 10%;
+  margin-right: 10%;
+  font-family: 'Quicksand', sans-serif, bold;
+  font-size: 1em;
+}
 
 .card-body {
   top: 0;
-  height: 40%;
+  height: 100%;
 }
 
 
@@ -790,7 +800,6 @@ h1, h2, h3 {
 /*PEN STYLES*/
 .blog-card {
   transition: height 0.3s ease;
-  -webkit-transition: height 0.3s ease;
   background: #fff;
   border-radius: 3px;
   box-shadow: 0 3px 7px -3px rgba(0, 0, 0, 0.3);
@@ -798,8 +807,7 @@ h1, h2, h3 {
   overflow: hidden;
   position: relative;
   font-size: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  max-height: 100%;
 }
 
 .blog-card:hover .details {
@@ -954,7 +962,7 @@ h1, h2, h3 {
 @media screen and (min-width: 600px) {
   .blog-card {
     height: 200px;
-    max-width: 600px;
+    width: 600px;
     z-index: 1;
   }
 
