@@ -29,6 +29,7 @@ class Search extends Component {
         this.setState({results});
         console.log('this.state = ', this.state)
         this.props.updateSearched(this.state);
+        this.props.query(this.state.query);
       })
   }
   
@@ -55,6 +56,7 @@ class Search extends Component {
           id="search-from"
           onSubmit={(e) => {
             e.preventDefault();
+            e.target.value = "";
             return this.getInfo(this.state.events);
           }} 
         >

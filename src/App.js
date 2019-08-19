@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Redirect, Switch} from 'react-router-dom';
-// import { browserHistory } from 'react-router';
 import '../node_modules/bulma/css/bulma.css';
 import './App.css';
 import SearchBar from './components/SearchBar';
@@ -23,7 +22,7 @@ class App extends React.Component {
       searched: [],
       selectedVenue: null,
       selectedEvent: null,
-      imgUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAC3CAMAAAAGjUrGAAAAA1BMVEX///+nxBvIAAAAR0lEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBgxUwAAU+n3sIAAAAASUVORK5CYII=',
+      imgUrl: '',
       loginForm: false,
       signupForm: false,
       auth: { user: {}},
@@ -31,6 +30,7 @@ class App extends React.Component {
       currentUserMostSearched: false,
       mostFrequent: [],
       events: false,
+      query: '',
     }
   }
 
@@ -107,6 +107,9 @@ class App extends React.Component {
     this.setState({imgUrl: imgUrl})
   }
 
+  query = term => {
+    this.setState({query: term.toUpperCase()})
+  }
 
   render () {
     console.log(this.state);
@@ -132,11 +135,11 @@ class App extends React.Component {
                     <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
                   : 
                     null
-                  }
+                  } 
                   <Background imgUrl={this.state.imgUrl} />
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} updateSearched={this.updateSearched} currentUser={this.state.currentUser} />
-                  <SearchBar {...routeProps} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
-                  <CardsContainer searched={this.state.searched} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                  <SearchBar {...routeProps} query={this.query} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
+                  <CardsContainer searched={this.state.searched} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
                 </section>
               </div>
             ) }}

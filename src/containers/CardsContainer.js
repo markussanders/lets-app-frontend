@@ -39,7 +39,7 @@ class CardsContainer extends React.Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 content: term,
-                user_id: 3, 
+                user_id: this.props.currentUser.id , 
             })
         })
         .then(resp => resp.json())
@@ -75,7 +75,11 @@ class CardsContainer extends React.Component {
     render() {
         return (
             <div className="" id="cards-container">
-                <h1 className="Title">Trending</h1>
+                {this.props.searched.length > 1?
+                    <div id="results-container">
+                        <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.props.query}"`}</h2>
+                    </div> : <h1 id="trending">TRENDING: </h1 >
+                }
                 <div className="columns is-multiline is-mobile is-centered">
                     {this.props.selectedEvents ? this.createEventCards() : this.createVenueCards()}
                 </div>
