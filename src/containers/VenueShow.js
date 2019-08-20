@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from '../containers/Slider';
 import backbutton from '../backbutton.png';
+import Map from '../components/Map';
 
 class VenueShow extends React.Component {
 
@@ -9,8 +10,22 @@ class VenueShow extends React.Component {
         this.state = {
             currentUser: this.props.currentUser,
             venue: this.props.venue,
+            path: this.props.venuePath
         };
+        this.fetchVenue(this.props.path);
     }
+
+    fetchVenue = (path) => {
+        console.log('HERE')
+        fetch(`http://localhost:3000${this.state.path}`)
+            .then(resp => resp.json())
+            .then(venue => {
+                this.setState({
+                    venue: venue
+                })
+            });
+    }
+
 
     sliderData = photos => {
         return photos.map(photo => {
@@ -80,6 +95,9 @@ class VenueShow extends React.Component {
             })
         }).then(resp => resp.json()).then(console.log);
     }
+
+    componentWillMount() {
+    }
     
     render () {
         const venueInfo = this.state.venue;
@@ -96,9 +114,8 @@ class VenueShow extends React.Component {
         console.log("state =", this.state)
         return (
             <div id="venue-show-page">
-                {/* <div id="venue-show-main-image">
-                    <img className="image" id="venue-show-image" src={venueInfo.venue.image_url} alt={venueInfo.venue.name}/>
-                </div> */}
+                {this.state.venue ? 
+                <div>
                 <div id="venue-show-name">
                     <h2 id="venue-name">{venueInfo ? venueInfo.venue.name.toUpperCase() : null}</h2>
                 </div>
@@ -128,6 +145,15 @@ class VenueShow extends React.Component {
                     {this.state.currentUser.id ? <h4 id="save-button" onClick={ () => {this.saveVenue()}}>SAVE</h4> : null}
                     <h4 id="share-button">SHARE</h4>
                 </div>
+                <div>
+                    {/* <Map 
+                        google={this.props.google}
+                        center={{lat: 41.8914, lng: 87.6274}}
+                        height='300px'
+                        zoom={15} 
+                    /> */}
+                </div>
+                </div> : null}
             </div>
         )
     }

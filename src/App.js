@@ -92,6 +92,7 @@ class App extends React.Component {
         this.updateSelectedVenue(venue)
       });
   }
+
   fetchEvent = (path) => {
     fetch(`http://localhost:3000${path}`)
       .then(resp => resp.json())
@@ -158,7 +159,7 @@ class App extends React.Component {
                   : 
                     null
                   }                 
-                <VenueShow venue={(this.state.selectedVenue || this.fetchVenue(routeProps.location.pathname))} history={routeProps.history} currentUser={this.state.currentUser}/>
+                <VenueShow venue={this.state.selectedVenue} venuePath={routeProps.location.pathname} history={routeProps.history} currentUser={this.state.currentUser}/>
               </div>
             )
           }} />
