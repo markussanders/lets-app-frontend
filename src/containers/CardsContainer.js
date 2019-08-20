@@ -8,9 +8,12 @@ class CardsContainer extends React.Component {
    constructor(props) {
         super(props);
         this.state = {
+            currentUser: (this.props.currentUser || JSON.parse(localStorage.getItem('user'))),
             venues: [],
             searched: this.props.searched,
+            query: this.props.query,
         }
+        this.ref = React.createRef()
     }
 
     componentDidMount() {
@@ -20,7 +23,10 @@ class CardsContainer extends React.Component {
     fetchVenues() {
         fetch('http://localhost:3000/venues')
             .then(resp => resp.json())
-            .then(venues => this.setState({venues}))
+            .then(venues => {
+                let sorted = venues.sort((a, b) => b.rating - a.rating);
+                this.setState({venues: sorted})
+            })
     }
 
     fetchSearches = () => {
@@ -39,13 +45,18 @@ class CardsContainer extends React.Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 content: term,
-                user_id: this.props.currentUser.id , 
+                user_id: this.state.currentUser.id , 
             })
         })
         .then(resp => resp.json())
         .then(results => {
-            this.setState({venues: results});
-            console.log('this.state.results = ', this.state.results)
+            this.setState({
+                venues: results, 
+                query: term, 
+                searched: results
+            });
+            console.log('this.state.ref = ', this.ref)
+            window.scrollTo(0, this.ref.current.offsetTop)
         })
 
     }
@@ -74,15 +85,22 @@ class CardsContainer extends React.Component {
 
     render() {
         return (
-            <div className="" id="cards-container">
-                {this.props.searched.length > 1?
+            <div className="" id="cards-container" ref={this.ref}>
+                {this.state.searched.length > 1?
                     <div id="results-container">
-                        <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.props.query}"`}</h2>
+                        <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.state.query}"`}</h2>
                     </div> : <h1 id="trending">TRENDING: </h1 >
                 }
-                <div className="columns is-multiline is-mobile is-centered">
-                    {this.props.selectedEvents ? this.createEventCards() : this.createVenueCards()}
+
+                {this.props.selectedEvents ?
+                <div id="event-cards-container">
+                     {this.createEventCards()}
                 </div>
+                :
+                <div className = "columns is-multiline is-mobile is-centered">
+                     {this.createVenueCards()}
+                </div>
+                }
             </div>
         )
     }

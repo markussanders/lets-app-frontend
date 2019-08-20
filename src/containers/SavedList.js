@@ -1,6 +1,8 @@
 import React from 'react';
 import VenueCard from '../components/VenueCard';
 import Completed from '../components/Completed';
+import backbutton from '../backbutton.png';
+
 
 class SavedList extends React.Component {
     constructor(props) {
@@ -92,6 +94,7 @@ class SavedList extends React.Component {
     render() {
         return (
             <div id="saved-list-page">
+            <div className="back-button-container"  onClick={() => this.props.history.goBack()}><img src={backbutton} alt="" className="back-button"/>GO BACK</div>
                 <h2 id="your-list">YOUR LIST</h2>
                 <div id="saved-completed-containers">
                     < div id = "saved-list-container" >

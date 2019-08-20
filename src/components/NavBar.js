@@ -7,27 +7,27 @@ import lets from '../lets.png'
     const loggedIn = (
         <div id="nav-bar-list" className="navbar-start">
             <ul>
-                <li><a href={`/users/${props.currentUser.id}`} id="hi-user" className = "navbar-item"> Hi, {props.currentUser.username}! </a> </li>
-                <li><a href={`/users/${props.currentUser.id}`} className = "navbar-item"> Your account </a> </li>
+                <li><a href={`/users/${props.currentUser.id}`} id="hi-user" className = "navbar-item"> hi, {props.currentUser.username}! </a> </li>
+                <li><a href={`/users/${props.currentUser.id}`} className = "navbar-item"> account </a> </li>
                 <li><a href="/home" className="navbar-item" onClick={() => {
-                }}> Home </a> </li>
+                }}> home </a> </li>
                 <li><a href="/home" className="navbar-item" onClick={() => {
                     props.handleLogout(props.currentUser);
-                }}> Logout </a></li>
+                }}> logout </a></li>
             </ul>
         </div>
     )
 
     const notLoggedIn = (
         <ul id="nav-bar-list" className="breadcrumb is-right" aria-label="breadcrumbs">
-            <li> <span className="icon is-small"> <i className="fas fa-home" aria-hidden="true"></i></span><a href="/" className="navbar-item"> Home </a> </li>
-            <li><a href="/about" className="navbar-item"> About </a></li>
+            <li> <span className="icon is-small"> <i className="fas fa-home" aria-hidden="true"></i></span><a href="/" className="navbar-item"> home </a> </li>
+            <li><a href="/about" className="navbar-item"> about </a></li>
             <li><a href="#" className="navbar-item" onClick={() => {
                 props.loginForm();
-            }}> Login </a></li>
+            }}> login </a></li>
             <li><a href="#" className="navbar-item" onClick={() => {
                 props.signupForm()
-            }}> Signup </a> </li>
+            }}> signup </a> </li>
         </ul>
     )
 

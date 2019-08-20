@@ -70,15 +70,12 @@ class Suggester extends React.Component {
     }, {});
 
     const mostFrequent = Object.keys(count).reduce((a, b) => count[a] > count[b] ? a : b);
-    console.log(mostFrequent)
     if (mostFrequent) {
       this.setState({mostFrequent});
     } 
   }
 
   search = async (content=this.state.mostFrequent) => {
-    console.log(this.state);
-    console.log(content);
      const resp = await fetch('http://localhost:3000/searches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

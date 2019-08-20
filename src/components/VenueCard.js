@@ -21,19 +21,18 @@ const VenueCard = props => {
                 image_url: venue.image_url,
                 url: venue.url,
             })
-        }).then(resp => resp.json()).then(result => retrieveVenue(venue));
+        }).then(resp => resp.json()).then(result => {
+            retrieveVenue(result);
+        });
     }
     const retrieveVenue = (venue) => {
-        let venueId = venue.yelp_id ? venue.yelp_id : venue.id;
-        fetch(`http://localhost:3000/venues/${venueId}`).then(resp => resp.json()).then(result => {
+        fetch(`http://localhost:3000/venues/${venue.yelp_id}`).then(resp => resp.json()).then(result => {
             props.updateSelectedVenue(result);
             props.history.push(`/venues/${venue.yelp_id}`);
         })
     }
 
     const renderCategories = venue => {
-        // console.log('venue = ', venue)
-        //Some categories results 
         if (Array.isArray(venue.categories)) {
             return venue.categories.map(category => {
                 return <li><p onClick={() => {

@@ -10,13 +10,15 @@ class VenueShow extends React.Component {
         this.state = {
             currentUser: this.props.currentUser,
             venue: this.props.venue,
-            path: this.props.venuePath
+            path: this.props.venuePath,
+            active: false,
+            saved: null,
         };
         this.fetchVenue(this.props.path);
     }
 
     fetchVenue = (path) => {
-        console.log('HERE')
+        console.log('PATH= ',path)
         fetch(`http://localhost:3000${this.state.path}`)
             .then(resp => resp.json())
             .then(venue => {
@@ -25,7 +27,6 @@ class VenueShow extends React.Component {
                 })
             });
     }
-
 
     sliderData = photos => {
         return photos.map(photo => {
@@ -93,12 +94,18 @@ class VenueShow extends React.Component {
                 user_id: this.props.currentUser.id,
                 venue_id: this.state.venue.venue.id
             })
-        }).then(resp => resp.json()).then(console.log);
+        }).then(resp => resp.json()).then(saved => this.setState({saved: saved.id}));
     }
 
-    componentWillMount() {
+    unsaveVenue = () => {
+        fetch(`http://localhost:3000/saved_lists/${this.state.saved}`, {
+            method: 'DELETE'
+        }).then(resp => resp.json()).then(message => console.log(message));
     }
-    
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     render () {
         const venueInfo = this.state.venue;
         /// If save button is chosen to be visible to those not logged in, if they are not logged in, then return this prompt.
@@ -119,7 +126,7 @@ class VenueShow extends React.Component {
                 <div id="venue-show-name">
                     <h2 id="venue-name">{venueInfo ? venueInfo.venue.name.toUpperCase() : null}</h2>
                 </div>
-                <div className="back-button-container"><img src={backbutton} alt="" className="back-button" onClick={() => this.props.history.goBack()}/>GO BACK</div>
+                <div className="back-button-container" onClick={() => this.props.history.goBack()}><img src={backbutton} alt="" className="back-button"/>GO BACK</div>
                 <div id="venue-show-other-images">
                     {this.state.venue && this.state.venue.venue.photos ? this.renderPhotos(venueInfo) : null}
                 </div>
@@ -142,7 +149,10 @@ class VenueShow extends React.Component {
                     </div>
                 </div>
                 <div className="share-save-buttons">
-                    {this.state.currentUser.id ? <h4 id="save-button" onClick={ () => {this.saveVenue()}}>SAVE</h4> : null}
+                    {this.state.currentUser.id ? <h4 id={this.state.active ? "save-button-active" : "save-button"} onClick={ () => {
+                        this.state.active ? this.unsaveVenue() : this.saveVenue();
+                        this.setState({active: !this.state.active})
+                        }}>{this.state.active ? "UNSAVE" : "SAVE"}</h4> : null}
                     <h4 id="share-button">SHARE</h4>
                 </div>
                 <div>

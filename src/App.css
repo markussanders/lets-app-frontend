@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=News+Cycle:400,700&display=swap');
 /* #search-input.input{
   width: 40%;
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
@@ -27,6 +27,7 @@
   padding: 0;
   height: 40em;
   overflow: scroll;
+  width: 100%;
 }
 
 
@@ -206,6 +207,14 @@
   font-family: 'Quicksand', sans-serif;
 }
 
+#save-button-active {
+  height: 3%;
+  background-color: rgb(228, 128, 128);
+  border: 2px solid rgb(247, 85, 36);
+  font-family: 'Quicksand', sans-serif;
+}
+
+
 #share-button {
   height: 3%;
   border: 2px dotted rgb(255, 161, 98);
@@ -292,6 +301,116 @@
   top: 0;
   height: 100%;
 }
+
+
+
+.event-card {
+  border: 1px solid grey;
+  display: flex;
+  width: 60%;
+  height: 15em;
+  margin-bottom: 2em;
+  object-fit: cover;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.event-cards-container {
+  width: 100%;
+  align-content: space-between;
+}
+
+.event-card-photo {
+  height: 100%;
+  width: 20%;
+  object-fit: cover;
+}
+
+.event-card-category {
+  visibility: hidden;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  color: #fff;
+  font-family: 'Quicksand',
+  sans-serif,
+  bold;
+  list-style: none;
+  margin: 0;
+  height: 100%;
+  width: 20%;
+  position: absolute;
+}
+
+.event-card-category:hover {
+  color: rgb(39, 204, 141);
+  border: 2px dotted;
+}
+
+.event-card-category-text {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.event-card img:hover ~ .event-card-category {
+  visibility: visible;
+  /* transform: rotate(5deg) scale(1.3); */
+  background: center no-repeat;
+  background-size: cover;
+  position: absolute;
+}
+
+.event-card-description {
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  font-family: 'Quicksand', sans-serif, bold;
+}
+
+.event-card-name {
+  margin-top: 5%;
+  font-family: 'News Cycle', sans-serif, 700;
+}
+
+.event-card-summary {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  overflow: scroll;
+}
+
+.event-card-buttons {
+  margin-top: 2%;
+  right: 0;
+  bottom: 0;
+}
+
+.something {
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
+    box-sizing: border-box;
+    color: #fff;
+    font-family: "Open Sans";
+    list-style: none;
+    margin: 0;
+    padding: 10px 15px;
+    height: 200px;
+    /*POSITION*/
+    position: absolute;
+    top: 0;
+    left: -100%;
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -467,6 +586,9 @@
 }
 
 #your-account-text {
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
   font-family: 'Quicksand', sans-serif, bold;
   font-size: 3em;
 
@@ -509,11 +631,36 @@
   color: rgb(99, 97, 97);
 }
 
+.profile-text {
+  margin-top: 15%;
+}
 
-#edit-form {
+#edit-forms {
   width: 50%;
   margin-left: auto;
   margin-right: auto;
+}
+
+#edit-forms input {
+  width: 25%;
+}
+#edit-username {
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+#edit-password {
+  margin-bottom: 10%;
+}
+.error-message {
+  color: red;
+}
+
+.form-label {
+  margin-right: 1%;
+  margin-left: 2%;
+  margin-top: auto;
+  margin-bottom: auto;
+  line-height:  2.5em;
 }
 
 #saved-list-container {
@@ -716,15 +863,13 @@ h1, h2, h3 {
   cursor: w-resize;
 }
 .slide--previous:hover {
-  -webkit-transform: translateX(2%);
-          transform: translateX(2%);
+  transform: translateX(2%);
 }
 .slide--next {
   cursor: e-resize;
 }
 .slide--next:hover {
-  -webkit-transform: translateX(-2%);
-          transform: translateX(-2%);
+  transform: translateX(-2%);
 }
 
 .slide--current {
@@ -732,10 +877,7 @@ h1, h2, h3 {
   --y: 0;
   opacity: 1;
   pointer-events: auto;
-  -webkit-user-select: auto;
-     -moz-user-select: auto;
-      -ms-user-select: auto;
-          user-select: auto;
+  user-select: auto;
 }
 @media (hover: hover) {
   .slide--current:hover .slide__image-wrapper {
@@ -761,8 +903,7 @@ h1, h2, h3 {
 .slide__image {
   height: 110%;
   left: -5%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   opacity: 0;
   pointer-events: none;
   position: absolute;
@@ -770,16 +911,12 @@ h1, h2, h3 {
   transition: opacity var(--base-duration) var(--base-ease), -webkit-transform var(--base-duration) var(--base-ease);
   transition: opacity var(--base-duration) var(--base-ease), transform var(--base-duration) var(--base-ease);
   transition: opacity var(--base-duration) var(--base-ease), transform var(--base-duration) var(--base-ease), -webkit-transform var(--base-duration) var(--base-ease);
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  user-select: none;
   width: 110%;
 }
 @media (hover: hover) {
   .slide--current .slide__image {
-    -webkit-transform: translate(calc(var(--x) / 20 * 1px), calc(var(--y) / 20 * 1px));
-            transform: translate(calc(var(--x) / 20 * 1px), calc(var(--y) / 20 * 1px));
+    transform: translate(calc(var(--x) / 20 * 1px), calc(var(--y) / 20 * 1px));
   }
 }
 
@@ -867,16 +1004,6 @@ h1, h2, h3 {
 .blog-card .photo {
   height: 200px;
   position: relative;
-}
-
-.blog-card .photo.photo1 {
-  background: url("http://i62.tinypic.com/34oq4o0.jpg") center no-repeat;
-  background-size: cover;
-}
-
-.blog-card .photo.photo2 {
-  background: url("http://i60.tinypic.com/xeiv79.jpg") center no-repeat;
-  background-size: cover;
 }
 
 .blog-card .details {

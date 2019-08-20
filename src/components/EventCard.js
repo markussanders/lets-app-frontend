@@ -42,37 +42,47 @@ const EventCard = props => {
         return "No pricing information available";
     }
 
+    const renderLocation = event => {
+        let location = event.location;
+        let locationStr = `${location.address1} ${location.city}, IL ${location.zip_code}`
+        return <h4 className="event-location">{locationStr}</h4>
+    }
+    
+
     return (
-        <div className="columns is-one-quarter">
-            <div className='blog-card'>
-                <img className="photo" src={`${event.image_url}`} alt={`${event.name}`}/>
-                <div className="details">
-                    <ul className="tags">
-                        <li><p>{`${event.category}`}</p></li>
-                    </ul>
+        <div className='event-card'>
+            <img className="event-card-photo" src={`${event.image_url}`} alt={`${event.name}`}/>
+            <div className="event-card-category">
+                <ul className="tags">
+                    <li><p className="event-card-category-text">{`${event.category}`}</p></li>
+                </ul>
+            </div>
+            <div className="event-card-description">
+                <h1 className="event-card-name">{event.name}</h1>
+                <h2>{renderCost(event)}</h2>
+                <p className="event-card-summary">{`${event.description.substring(0, 90)}...`}</p>
+                {renderLocation(event)}
+                <div className='event-card-buttons'>
+                    <a className="event-tickets-button" href={event.tickets_url} target="_blank" rel='noopener noreferrer'>GET TICKETS</a>
+                    <a className="event-yelp-button" href={event.event_site_url} target="_blank" rel='noopener noreferrer'>MORE INFO</a>
+                    <button className="add-event-button" onClick={() => addEventToDataBase(event)}>ADD TO MY LIST</button>
                 </div>
-                <div className="description">
-                    <h1 className="venue-card-name">{event.name}</h1>
-                    <h2>{renderCost(event)}</h2>
-                    {/* <p className="summary">{`${event.description.substring(0, 45)}...`}</p> */}
-                    <button className="view-button-event" onClick={() => addEventToDataBase(event)}>MORE DETAILS</button>
-                </div>
-                 {props.deleteSaved ?
-                    <div className="delete-saved" >
-                        <button className="delete-saved-button" onClick={() => {
-                            props.deleteSaved(event);
-                        }}>DELETE</button>
-                    </div> 
-                : null}
-                {props.markCompleted ?
-                    <div className="complete-saved" >
-                        <button className="complete-saved-button" onClick={() => {
-                            props.markCompleted(event);
-                        }}>MARK COMPLETE</button>
-                    </div> 
-                : null}
-            </div> 
-        </div>
+            </div>
+                {props.deleteSaved ?
+                <div className="delete-saved" >
+                    <button className="delete-saved-button" onClick={() => {
+                        props.deleteSaved(event);
+                    }}>DELETE</button>
+                </div> 
+            : null}
+            {props.markCompleted ?
+                <div className="complete-saved" >
+                    <button className="complete-saved-button" onClick={() => {
+                        props.markCompleted(event);
+                    }}>MARK COMPLETE</button>
+                </div> 
+            : null}
+        </div> 
     )
 }
 

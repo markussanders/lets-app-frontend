@@ -67,7 +67,7 @@ class Search extends Component {
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-            <p>IN</p>
+            <p>in</p>
             <div id="search-bar-buttons">
               <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
               <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>
