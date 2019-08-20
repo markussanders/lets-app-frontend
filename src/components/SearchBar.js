@@ -67,8 +67,11 @@ class Search extends Component {
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-          <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
-          <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>
+            <p>IN</p>
+            <div id="search-bar-buttons">
+              <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
+              <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>
+            </div>
           {/* <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button> */}
         </form>
       </section>

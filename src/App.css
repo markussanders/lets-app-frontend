@@ -53,6 +53,9 @@
   width: 800px;
 }
 
+#search-bar-buttons button {
+  margin: 1em;
+}
 /* #color-block {
   background: white;
   height: 100%;
@@ -435,9 +438,6 @@
   width: 300px;
 }
 
-#input-text {
-}
-
 .logo {
   max-width: 200px;
   max-height:140px;
@@ -461,11 +461,40 @@
 }
 
 .profile-section {
-  border: solid 2px black;
-  width: 50%;
-  height: 50%;
+  width: 25em;
+  height: 10em;
+  margin: .5em;
 }
 
+#your-account-text {
+  font-family: 'Quicksand', sans-serif, bold;
+  font-size: 3em;
+
+}
+
+#profile-update{
+  text-align: center;
+  font-family: 'Quicksand', sans-serif, bold;
+  border: .4em solid rgb(183, 228, 183);
+}
+
+#profile-change{
+  text-align: center;
+  font-family: 'Quicksand', sans-serif, bold;
+  border: .4em solid rgb(181, 216, 242);
+}
+
+
+#profile-delete {
+  text-align: center;
+  font-family: 'Quicksand', sans-serif, bold;
+  border: .4em solid rgb(255, 76, 77);
+}
+
+
+.button-change {
+  background-color: rgb(181, 216, 242);
+}
 
 .profile-stacked {
   display: flex;
@@ -475,8 +504,16 @@
 .profile-option {
   color: red;
 }
+
 .profile-option-disabled {
   color: rgb(99, 97, 97);
+}
+
+
+#edit-form {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #saved-list-container {
