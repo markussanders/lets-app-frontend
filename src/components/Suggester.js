@@ -9,36 +9,56 @@ class Suggester extends React.Component {
         this.state = {
             currentUser: this.props.currentUser,
             currentUserMostSearched: false,
+            userSearches: [],
             mostFrequent: '',
             events: false,
+            results: [],
+
         };
-        this.fetchSearches();
+    }
+    componentDidMount() {
+      this.fetchSearches();
     }
 
     suggest = term => {
         switch (term) {
-
             case 'food':
               this.setState({events: false});
-              let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nacho', 'hotdog', 'fries', 'ice cream', 'burrito'];
-              this.search(foods[Math.floor(Math.random() * foods.length)]);
+              if (this.state.currentUserMostSearched) {
+                let foodSearches = this.filterSearches(this.state.userSearches, 'food');
+                let mostFrequent = this.getMostFrequentSearch(foodSearches);
+                this.search(mostFrequent, 'food');
+              } else {  
+                let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nachos', 'hotdog', 'fries', 'ice cream', 'burrito'];
+                this.search(foods[Math.floor(Math.random() * foods.length)]);
+              }
             break;
 
-            case 'bars':
+            case 'drinks':
+              console.log('HERE');
               this.setState({events: false});
-              let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
-              this.search(bars[Math.floor(Math.random() * bars.length)]);
+              if (this.state.currentUserMostSearched) {
+                let barSearches = this.filterSearches(this.state.userSearches, 'drinks');
+                console.log('BARSEARCHES = ', barSearches);
+                let mostFrequent = this.getMostFrequentSearch(barSearches);
+                console.log('MOSTFREQ = ', mostFrequent);
+                this.search(mostFrequent, 'drinks');
+              } else {
+                let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
+                this.search(bars[Math.floor(Math.random() * bars.length)]);
+              }
             break;
 
             case 'concerts':
               this.setState({events: true});
-              this.search('music');
+              let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
+              this.search(concerts[[Math.floor(Math.random() * concerts.length)]]);
             break;
 
-            case 'restaurants': 
-            break;
-
-            case 'random':
+            case 'performances':
+              this.setState({events: true});
+              let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
+              this.search(performance[[Math.floor(Math.random() * performances.length)]]);             
             break;
 
             default:
@@ -51,9 +71,9 @@ class Suggester extends React.Component {
       fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
         .then(resp => resp.json())
         .then(user => {
-          this.setState({currentUserMostSearched: true});
-          this.getMostFrequentSearch(user.searches);
+          this.setState({currentUserMostSearched: true, userSearches: user.searches});
         })
+        console.log('GOT HERE', this.state)
     } else {
       fetch('http://localhost:3000/searches')
         .then(resp => resp.json())
@@ -68,14 +88,22 @@ class Suggester extends React.Component {
       count[term.content] = (count[term.content] || 0) + 1;
       return count;
     }, {});
+    // const mostFrequent = Object.keys(count).reduce((a, b) => count[a] > count[b] ? a : b);
+    const mostFrequent = Object.keys(count).sort((a, b) => count[b] - count[a]);
 
-    const mostFrequent = Object.keys(count).reduce((a, b) => count[a] > count[b] ? a : b);
+    console.log(mostFrequent, Object.keys(count));
+    
     if (mostFrequent) {
-      this.setState({mostFrequent});
+      this.setState({mostFrequent: mostFrequent[0]});
     } 
+    return mostFrequent[0];
   }
 
-  search = async (content=this.state.mostFrequent) => {
+  filterSearches = (searches, term) => {
+    return searches.filter(search => search.category === term);
+  }
+
+  search = async (content=this.state.mostFrequent, category='all') => {
      const resp = await fetch('http://localhost:3000/searches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -83,10 +111,13 @@ class Suggester extends React.Component {
         content: content,
         user_id: (this.state.currentUser.id || 1),
         is_event: this.state.events,
+        category: category
       })
     });
     const result = await resp.json();
-    return result;
+    this.setState({results: result});
+    console.log('search state = ', this.state);
+    this.props.updateSearched(this.state);
   }
 
     render() {
@@ -100,7 +131,7 @@ class Suggester extends React.Component {
                 }} onClick={() => this.suggest('food')}>EAT</li>
                 <li className="suggester-option" id="drink-button" onMouseEnter={()=> {
                     this.props.updateBackgroundImage('https://washington-org.s3.amazonaws.com/s3fs-public/friends-drinking-cocktails-at-night-on-the-o-ku-rooftop_ddc-photo.jpg')
-                }} onClick={() =>this.suggest('bars')}>DRINK</li>
+                }} onClick={() =>this.suggest('drinks')}>DRINK</li>
                 <li className="suggester-option" id="listen-button" onMouseEnter={()=> {
                     this.props.updateBackgroundImage('https://www.bumpclubandbeyond.com/wp-content/uploads/2018/05/concert-3387324_960_720-960x420.jpg')
                 }} onClick={() => this.suggest('concerts')}>LISTEN</li>

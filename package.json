@@ -10,6 +10,7 @@
     "lodash": "^4.17.15",
     "materialize-css": "^1.0.0-rc.2",
     "react": "^16.8.6",
+    "react-calendar": "^2.19.1",
     "react-dom": "^16.8.6",
     "react-geocode": "^0.1.2",
     "react-google-autocomplete": "^1.1.1",

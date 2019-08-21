@@ -323,7 +323,7 @@
 
 .event-card-photo {
   height: 100%;
-  width: 20%;
+  width: 30%;
   object-fit: cover;
 }
 
@@ -383,9 +383,9 @@
 }
 
 .event-card-buttons {
-  margin-top: 2%;
   right: 0;
   bottom: 0;
+  margin-top: 2%;
 }
 
 .something {
@@ -405,9 +405,20 @@
 }
 
 
+#your-calendar {
+  margin-top: 15%;
+  text-align: center;
+  font-family: 'Quicksand',
+  sans-serif;
+  font-size: 2em;
+}
 
-
-
+.react-calendar {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
 
 
 

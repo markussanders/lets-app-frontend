@@ -10,6 +10,7 @@ class Search extends Component {
       query: '',
       results: [],
       events: true,
+      value: '',
     }
   }
 
@@ -22,6 +23,7 @@ class Search extends Component {
         content: this.state.query,
         user_id: (this.props.currentUser.id || 1),
         is_event: this.state.events, 
+        category: this.state.value,
       })
     })
       .then(resp => resp.json())
@@ -48,8 +50,15 @@ class Search extends Component {
     )
   }
 
+  handleChange = event => {
+    this.setState({
+      value: event.target.value
+    });
+  }
+
   
   render() {
+    console.log('state= ', this.state);
     return (
       <section className="tile is-5 is-parent" id="search">
           <form 
@@ -57,7 +66,7 @@ class Search extends Component {
           onSubmit={(e) => {
             e.preventDefault();
             e.target.value = "";
-            return this.getInfo(this.state.events);
+            return this.getInfo();
           }} 
         >
           <input
@@ -67,7 +76,15 @@ class Search extends Component {
             ref={input => this.search = input}
             onChange={this.handleInputChange}
             />
-            <p>in</p>
+  
+            <select value={this.state.value} onChange={this.handleChange}>
+              <option value="all">All Categories</option>
+              <option value="food">Food</option>
+              <option value="drinks">Drinks</option>
+              <option value="music">Music</option>
+              <option value="movies">Movies/Visual Arts</option>
+            </select>
+
             <div id="search-bar-buttons">
               <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
               <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>

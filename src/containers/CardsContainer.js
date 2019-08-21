@@ -45,7 +45,7 @@ class CardsContainer extends React.Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 content: term,
-                user_id: this.state.currentUser.id , 
+                user_id: this.state.currneUser ? this.state.currentUser.id : 1, 
             })
         })
         .then(resp => resp.json())

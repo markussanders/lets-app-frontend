@@ -13,6 +13,7 @@ import Login from './components/LogIn';
 import SavedList from './containers/SavedList';
 import Profile from './containers/Profile';
 import Signup from './components/Signup';
+import UserCalendar from './containers/UserCalendar';
 
 class App extends React.Component {
 
@@ -237,6 +238,25 @@ class App extends React.Component {
                   }
                   <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
                   <SavedList currentUser = {this.state.currentUser} history={routeProps.history} />
+                </section> :
+                <Redirect to='/home'/>
+            }
+          } />
+          <Route exact path='/users/:id/calendar' render={(routeProps) => {
+            return localStorage.getItem('user_id') ?
+                <section id="saved">
+                  {this.state.loginForm ? 
+                    <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
+                  : 
+                    null
+                  }
+                  {this.state.signupForm ? 
+                    <Signup currentUser = {this.state.currentUser} signupForm = {this.signupForm} handleSignup = {this.handleSignup}/>
+                  : 
+                    null
+                  }
+                  <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm = {this.signupForm} handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                  <UserCalendar />
                 </section> :
                 <Redirect to='/home'/>
             }
