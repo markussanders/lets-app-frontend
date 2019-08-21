@@ -110,20 +110,20 @@ class CardsContainer extends React.Component {
     render() {
         return (
             <div className="" id="cards-container" ref={this.ref}>
-                <div id="sort-by-dropdown">
-                    <h6 id="sort-by">Sort by: </h6>
-                    <select value={this.state.value} onChange={this.handleChange}>
-                        <option value="relevance">--</option>
-                        <option value="rating">Rating</option>
-                        <option value="name">Name (A-Z)</option>
-                        < option value = "reverse" > Name (Z- A)</option>
-                    </select>
-                </div>
                 {this.state.searched.length > 1?
                     <div id="results-container">
                         <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.state.query}"`}</h2>
                     </div> : <h1 id="trending">TRENDING: </h1 >
                 }
+                <div id="sort-by-dropdown">
+                    <h6 id="sort-by">Sort by: </h6>
+                    <select id="select" value={this.state.value} onChange={this.handleChange}>
+                        <option value="relevance">--</option>
+                        <option value="rating">Rating</option>
+                        <option value="name">Name (A-Z)</option>
+                        <option value="reverse"> Name (Z- A)</option>
+                    </select>
+                </div>
 
                 {this.props.selectedEvents ?
                 <div id="event-cards-container">

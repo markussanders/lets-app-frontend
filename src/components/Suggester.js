@@ -27,10 +27,10 @@ class Suggester extends React.Component {
               if (this.state.currentUserMostSearched) {
                 let foodSearches = this.filterSearches(this.state.userSearches, 'food');
                 let mostFrequent = this.getMostFrequentSearch(foodSearches);
-                this.search(mostFrequent, 'food');
+                this.search(false, mostFrequent, 'food');
               } else {  
                 let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nachos', 'hotdog', 'fries', 'ice cream', 'burrito'];
-                this.search(foods[Math.floor(Math.random() * foods.length)]);
+                this.search(false,foods[Math.floor(Math.random() * foods.length)]);
               }
             break;
 
@@ -42,23 +42,23 @@ class Suggester extends React.Component {
                 console.log('BARSEARCHES = ', barSearches);
                 let mostFrequent = this.getMostFrequentSearch(barSearches);
                 console.log('MOSTFREQ = ', mostFrequent);
-                this.search(mostFrequent, 'drinks');
+                this.search(false, mostFrequent, 'drinks');
               } else {
                 let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
-                this.search(bars[Math.floor(Math.random() * bars.length)]);
+                this.search(false,bars[Math.floor(Math.random() * bars.length)]);
               }
             break;
 
             case 'concerts':
               this.setState({events: true});
               let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
-              this.search(concerts[[Math.floor(Math.random() * concerts.length)]]);
+              this.search(true, concerts[Math.floor(Math.random() * concerts.length)]);
             break;
 
             case 'performances':
               this.setState({events: true});
               let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
-              this.search(performance[[Math.floor(Math.random() * performances.length)]]);             
+              this.search(true,performance[Math.floor(Math.random() * performances.length)]);             
             break;
 
             default:
@@ -103,18 +103,19 @@ class Suggester extends React.Component {
     return searches.filter(search => search.category === term);
   }
 
-  search = async (content=this.state.mostFrequent, category='all') => {
+  search = async (isEvent=false, content=this.state.mostFrequent, category='all') => {
      const resp = await fetch('http://localhost:3000/searches', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         content: content,
         user_id: (this.state.currentUser.id || 1),
-        is_event: this.state.events,
+        is_event: isEvent,
         category: category
       })
     });
     const result = await resp.json();
+    console.log('result = ', result);
     this.setState({results: result});
     console.log('search state = ', this.state);
     this.props.updateSearched(this.state);

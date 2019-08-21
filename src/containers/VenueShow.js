@@ -1,7 +1,24 @@
 import React from 'react';
 import Slider from '../containers/Slider';
 import backbutton from '../backbutton.png';
-import Map from '../components/Map';
+import MyFancyComponent from '../components/MyFancyComponent';
+
+
+const getLocation = venueInfo => {
+    let location = venueInfo.venue.location.replace(/=>/g, ':');
+    let replaced = location.replace(/nil/g, '""');
+    let locationObj = JSON.parse(replaced);
+    console.log(locationObj);
+    let str = locationObj.address1.split(' ').join('+')
+    console.log(str);
+}
+const getCoordinates = venueInfo => {
+    let coordinates = venueInfo.venue.coordinates.replace(/=>/g, ':');
+    let output = JSON.parse(coordinates);
+    console.log('coordinates', output);
+    return coordinates;
+}
+
 
 class VenueShow extends React.Component {
 
@@ -15,6 +32,7 @@ class VenueShow extends React.Component {
             saved: null,
         };
         this.fetchVenue(this.props.path);
+
     }
 
     fetchVenue = (path) => {
@@ -25,7 +43,7 @@ class VenueShow extends React.Component {
                 this.setState({
                     venue: venue
                 })
-            });
+            })
     }
 
     sliderData = photos => {
@@ -58,6 +76,7 @@ class VenueShow extends React.Component {
             <h6 id="yelp-link"><a href={url} target="blank">VIEW ON YELP</a></h6>
         )
     }
+    
 
     
     renderAddress = venueInfo => {
@@ -106,6 +125,14 @@ class VenueShow extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 0);
     }
+
+    // renderLocationObj = () => {
+    //     if (this.state.venue) {
+    //         const venueInfo = this.state.venue;
+    //         let location = venueInfo.venue.location;
+    //         console.log('LOCATION =', location);
+    //     }
+    // }
     render () {
         const venueInfo = this.state.venue;
         /// If save button is chosen to be visible to those not logged in, if they are not logged in, then return this prompt.
@@ -118,11 +145,12 @@ class VenueShow extends React.Component {
         //         <button class="modal-close is-large" aria-label="close"></button>
         //     </div>
         // )
-        console.log("state =", this.state)
+        console.log("state =", this.state);
         return (
             <div id="venue-show-page">
                 {this.state.venue ? 
                 <div>
+                {getCoordinates(venueInfo)}
                 <div id="venue-show-name">
                     <h2 id="venue-name">{venueInfo ? venueInfo.venue.name.toUpperCase() : null}</h2>
                 </div>
@@ -158,12 +186,7 @@ class VenueShow extends React.Component {
                     }}>SHARE</h4>
                 </div>
                 <div>
-                    {/* <Map 
-                        google={this.props.google}
-                        center={{lat: 41.8914, lng: 87.6274}}
-                        height='300px'
-                        zoom={15} 
-                    /> */}
+                    <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} />
                 </div>
                 </div> : null}
             </div>

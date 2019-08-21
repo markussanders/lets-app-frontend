@@ -127,6 +127,15 @@
   border-radius: 10px;
 }
 
+#sort-by-drop-down {
+  margin-left: 90%;
+}
+
+#select {
+  width: 20em;
+  text-align: center;
+}
+
 #venue-show-name {
   margin-top: 10%;
   margin-bottom: 5%;
