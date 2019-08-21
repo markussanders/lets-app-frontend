@@ -69,7 +69,7 @@ const VenueCard = props => {
                         {venue.categories? renderCategories(venue) : null}
                     </ul>
                 </div>
-                <div className="description">
+                <div className={`description card-${Math.floor(venue.rating)}`}>
                     <h1 className="venue-card-name">{venue.name}</h1>
                     <p className="summary">Rated {venue.rating} out of 5</p>
                         {props.deleteSaved ?

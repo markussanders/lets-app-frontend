@@ -9,8 +9,9 @@ class Search extends Component {
     this.state = {
       query: '',
       results: [],
-      events: true,
+      events: false,
       value: '',
+      noResults: false,
     }
   }
 
@@ -28,7 +29,7 @@ class Search extends Component {
     })
       .then(resp => resp.json())
       .then(results => {
-        this.setState({results});
+        results.length >= 1 ? this.setState({results}) : this.setState({noResults: true});
         console.log('this.state = ', this.state)
         this.props.updateSearched(this.state);
         this.props.query(this.state.query);

@@ -32,6 +32,7 @@ class App extends React.Component {
       mostFrequent: [],
       events: false,
       query: '',
+      noResults: false,
     }
   }
 
@@ -44,7 +45,8 @@ class App extends React.Component {
     console.log('CHILD STATE =', childState)
     this.setState({
       searched: childState.results,
-      events: childState.events
+      events: childState.events,
+      noResults: childState.noResults,
     })
   }
 
@@ -140,7 +142,7 @@ class App extends React.Component {
                   <Background imgUrl={this.state.imgUrl} />
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} updateSearched={this.updateSearched} currentUser={this.state.currentUser} />
                   <SearchBar {...routeProps} query={this.query} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
-                  <CardsContainer searched={this.state.searched} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                  <CardsContainer  noResults={this.state.noResults} searched={this.state.searched} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
                 </section>
               </div>
             ) }}

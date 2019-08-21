@@ -28,6 +28,7 @@
   height: 40em;
   overflow: scroll;
   width: 100%;
+  justify-content: space-between;
 }
 
 
@@ -122,7 +123,7 @@
   background-color: #ffffff;
   margin-left: auto;
   margin-right: auto;
-  width: 90%;
+  width: 95%;
   border-radius: 10px;
 }
 
@@ -717,6 +718,7 @@
   margin-top: 5%;
   margin-bottom: 5%;
   font-family: 'Quicksand', sans-serif;
+  justify-content: space-around;
 }
 
 #showing-results-for {
@@ -983,8 +985,22 @@ h1, h2, h3 {
 
 
 
+.blog-card .card-5 {
+  background: #75D13B;
+}
 
-
+.blog-card .card-4 {
+  background: rgb(158, 233, 72);
+}
+.blog-card .card-3 {
+  background: rgb(220, 231, 59);
+}
+.blog-card .card-2 {
+  background: rgb(226, 151, 12);
+}
+.blog-card .card-1 {
+  background: rgb(228, 77, 39);
+}
 
 /*PEN STYLES*/
 .blog-card {
@@ -1116,6 +1132,46 @@ h1, h2, h3 {
   top: 6px;
   left: 0;
 }
+.blog-card .description p:after {
+  content: "";
+  background: #75D13B;
+  height: 6px;
+  width: 40px;
+  /*POSITION*/
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
+.blog-card .description p:after {
+  content: "";
+  background: #75D13B;
+  height: 6px;
+  width: 40px;
+  /*POSITION*/
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
+.blog-card .description p:after {
+  content: "";
+  background: #75D13B;
+  height: 6px;
+  width: 40px;
+  /*POSITION*/
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
+.blog-card .description p:after {
+  content: "";
+  background: #75D13B;
+  height: 6px;
+  width: 40px;
+  /*POSITION*/
+  position: absolute;
+  top: 6px;
+  left: 0;
+}
 
 .blog-card .description a {
   color: #75D13B;
@@ -1143,6 +1199,7 @@ h1, h2, h3 {
     height: 200px;
     width: 600px;
     z-index: 1;
+    margin-right: 5%;
   }
 
   .blog-card:hover .photo {

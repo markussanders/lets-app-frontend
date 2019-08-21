@@ -12,6 +12,7 @@ class CardsContainer extends React.Component {
             venues: [],
             searched: this.props.searched,
             query: this.props.query,
+            value: 'relevance',
         }
         this.ref = React.createRef()
     }
@@ -24,8 +25,8 @@ class CardsContainer extends React.Component {
         fetch('http://localhost:3000/venues')
             .then(resp => resp.json())
             .then(venues => {
-                let sorted = venues.sort((a, b) => b.rating - a.rating);
-                this.setState({venues: sorted})
+                console.log('venues', venues);
+                this.setState({venues})
             })
     }
 
@@ -36,7 +37,27 @@ class CardsContainer extends React.Component {
     }
 
     filterSearches = searches => {
-        // searches.filter(searches => {})
+        console.log('FILTER')
+        // return searches.filter(search => search.categoery === this.state.value);
+    }
+
+    sortVenues = venues => {
+        let param = this.state.value;
+        if (param === 'rating') {
+            let sorted = venues.sort((a, b) => (b.rating - a.rating));
+            console.log('sorted rating =',sorted)
+            return sorted;
+        } else if (param === 'name') {
+            let sorted = venues.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+            console.log('sorted name =',sorted)
+            return sorted;
+        } else if (param === 'reverse') {
+            let sorted = venues.sort((a, b) => (b.name.toLowerCase() > a.name.toLowerCase()) ? 1 : -1);
+            console.log('sorted reverse =',sorted);
+            return sorted;
+        } else {
+             return uniqBy(venues, 'name');
+        }
     }
 
     updateSearchedC = term => {
@@ -55,17 +76,17 @@ class CardsContainer extends React.Component {
                 query: term, 
                 searched: results
             });
-            console.log('this.state.ref = ', this.ref)
-            window.scrollTo(0, this.ref.current.offsetTop)
+            window.scrollTo(0, this.ref.current.offsetTop);
         })
 
     }
 
     createVenueCards() {
-        if (this.props.searched) {
+        if (this.props.searched || this.state.venues) {
             let venues = this.props.searched.length >= 1 ? this.props.searched : this.state.venues;
-            let uniqueVenues = uniqBy(venues, 'name')
-            return uniqueVenues.map(venue => {
+            let uniqueVenues = uniqBy(venues, 'name');
+            let sortedVenues = this.sortVenues(uniqueVenues);
+            return sortedVenues.map(venue => {
                return <VenueCard venue={venue} key={venue.id} updateSelectedVenue={this.props.updateSelectedVenue} updateSearched={this.updateSearchedC}/>
             })
         }
@@ -74,18 +95,30 @@ class CardsContainer extends React.Component {
     createEventCards() {
         if (this.props.searched) {
             let events = this.props.searched;
-            let uniqueEvents = uniqBy(events, 'description')
-            uniqueEvents = uniqBy(uniqueEvents, 'business_id')
-            console.log('UNIQUE EVENT = ', uniqueEvents);
+            let uniqueEvents = uniqBy(events, 'description');
+            uniqueEvents = uniqBy(uniqueEvents, 'business_id');
             return uniqueEvents.map(event => {
                 return <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} />
             })
         }
     }
+    handleChange = event => {
+        this.setState({value: event.target.value});
+        // this.sortVenues(this.state.venues);
+    }
 
     render() {
         return (
             <div className="" id="cards-container" ref={this.ref}>
+                <div id="sort-by-dropdown">
+                    <h6 id="sort-by">Sort by: </h6>
+                    <select value={this.state.value} onChange={this.handleChange}>
+                        <option value="relevance">--</option>
+                        <option value="rating">Rating</option>
+                        <option value="name">Name (A-Z)</option>
+                        < option value = "reverse" > Name (Z- A)</option>
+                    </select>
+                </div>
                 {this.state.searched.length > 1?
                     <div id="results-container">
                         <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.state.query}"`}</h2>

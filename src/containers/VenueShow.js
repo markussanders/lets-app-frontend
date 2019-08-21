@@ -153,7 +153,9 @@ class VenueShow extends React.Component {
                         this.state.active ? this.unsaveVenue() : this.saveVenue();
                         this.setState({active: !this.state.active})
                         }}>{this.state.active ? "UNSAVE" : "SAVE"}</h4> : null}
-                    <h4 id="share-button">SHARE</h4>
+                    <h4 id="share-button" onClick={() => {
+                        window.location.href = `mailto:yourfriend@email.com?subject=lets%20go%20here!&body=Have%20you%20been%20to%20${venueInfo.venue.name}?%20It%20looks%20awesome!%20It%20also%20has%20a%20${venueInfo.venue.rating}%20star%20rating%20on%20Yelp!`
+                    }}>SHARE</h4>
                 </div>
                 <div>
                     {/* <Map 
