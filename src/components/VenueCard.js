@@ -45,7 +45,7 @@ const VenueCard = props => {
         let categories = JSON.parse(replaced);
         return categories.map(category => {
             return <li key={""}><p onClick={() => {
-                props.updateSearched(category.title)
+                return props.deleteSaved ? "" : props.updateSearched(category.title)
             }}>{category.title}</p></li>
         })
     }
@@ -59,10 +59,14 @@ const VenueCard = props => {
     //         </div>
     //     )
     // }
+
+    const visitShow = () => {
+        window.location = `http://localhost:3001/venues/${venue.yelp_id}`;
+    }
     return (
         
         <div className="columns is-one-quarter" >
-             <div className="blog-card">
+             <div className={props.deleteSaved ? "blog-card blog-card-saved" : "blog-card"}>
                 <img className="photo" src={`${venue.image_url}`} alt={`${venue.name}`}/>
                 <div className="details">
                     <ul className="tags">
@@ -86,11 +90,16 @@ const VenueCard = props => {
                                 <br/><br/><br/><br/>           
                             </div>}
                         {props.markCompleted ?
+                        <div>
                             <div className="complete-saved" >
                                 <button className="complete-saved-button" onClick={() => {
                                     props.markCompleted(venue);
                                 }}>MARK COMPLETE</button>
                             </div> 
+                            <div>
+                                <button className="review-button" onClick={() => visitShow()}>VIEW</button>
+                            </div> 
+                        </div>
                         : null}
                 </div>
             </div>

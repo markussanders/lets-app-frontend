@@ -206,6 +206,7 @@
   height: 3%;
   border: 2px dotted rgb(124, 235, 124);
   font-family: 'Quicksand', sans-serif;
+  margin-right: 2%;
 }
 
 #save-button-active {
@@ -284,6 +285,15 @@
   right: 0;
   margin-left: 50%;
   margin-top: 20%;
+  margin-right: 10%;
+  font-family: 'Quicksand', sans-serif, bold;
+  font-size: 1em;
+}
+.review-button {
+  border: none;
+  right: 0;
+  margin-left: 80%;
+  margin-top: 10%;
   margin-right: 10%;
   font-family: 'Quicksand', sans-serif, bold;
   font-size: 1em;
@@ -688,7 +698,7 @@
   justify-content: space-evenly;
   margin-top: 10%;
   flex-wrap: wrap;
-  margin-bottom: 10%;
+  margin-bottom: 1v0%;
 }
 
 #completed-container {
@@ -1201,6 +1211,13 @@ h1, h2, h3 {
     z-index: 1;
     margin-right: 5%;
   }
+  .blog-card-saved {
+    height: 200px;
+    width: 600px;
+    z-index: 1;
+    margin-right: 2%;
+  }
+
 
   .blog-card:hover .photo {
     -webkit-transform: rotate(5deg) scale(1.3);

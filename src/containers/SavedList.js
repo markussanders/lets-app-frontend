@@ -12,15 +12,25 @@ class SavedList extends React.Component {
             savedList: null,
             completed: [],
             incomplete: [],
-            userItems: [],   
+            userItems: [],  
+            yay: false,
+            whoops: false, 
         }
     }
 
-    componentDidMount() {
+    componentDidMount() { 
+        this.fetchUserSavedList();
+        this.fetchAllSavedList();
+    }
+
+    fetchUserSavedList() {
         fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
             .then(resp => resp.json())
             .then(user => this.setState({savedList: user.venues}))
 
+    }
+
+    fetchAllSavedList() {
         fetch(`http://localhost:3000/saved_lists`)
         .then(resp => resp.json())
         .then(items => {
@@ -50,6 +60,7 @@ class SavedList extends React.Component {
     }
 
     markCompleted = venue => {
+        // this.setState({yay: true});
         let target = this.state.incomplete.find(saved => saved.venue_id === venue.id);
         console.log(venue)
         console.log(this.state);
@@ -84,11 +95,33 @@ class SavedList extends React.Component {
     }
 
     renderCompleted = () => {
-        let completedIDs = this.state.completed.map(el => el.venue_id);
+        let sortedCompleted = this.state.completed.sort((a, b) => a.created_at < b.created_at ? -1 : 1)
+        let completedIDs = sortedCompleted.map(el => el.venue_id);
+        console.log('this.state.completed', this.state.completed);
+        let userCompleted = this.state.completed;
         let venues = this.state.savedList.filter(el => completedIDs.includes(el.id));
         return venues.map(venue =>  {
-            return <Completed key={venue.id} venue={venue} />
+            return <Completed key={venue.id} venue={venue} markIncomplete={this.markIncomplete} userCompleted={userCompleted}/>
         })
+    }
+    
+    markIncomplete = (venue, record) => {
+        // this.setState({whoops: true});
+        console.log('state completed before', this.state.completed);
+        fetch(`http://localhost:3000/saved_lists/${record.id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                completed: false,
+            })
+        }).then(resp => resp.json()).then(result => {
+            console.log(result);
+            this.setState({
+                incomplete: [...this.state.incomplete, result],
+                completed: this.state.completed.filter(el => el.id !== result.saved_list.id),
+                userItems: this.state.completed.concat(this.state.incomplete)
+            })
+        }).then(this.fetchUserSavedList(), this.fetchAllSavedList())
     }
 
     render() {
@@ -97,7 +130,7 @@ class SavedList extends React.Component {
             <div className="back-button-container"  onClick={() => this.props.history.goBack()}><img src={backbutton} alt="" className="back-button"/>GO BACK</div>
                 <h2 id="your-list">YOUR LIST</h2>
                 <div id="saved-completed-containers">
-                    < div id = "saved-list-container" >
+                    <div id = "saved-list-container" >
                         {this.state.savedList ? this.createVenueCards() : null}
                     </div>
                     <div id="completed-container">
