@@ -21,40 +21,101 @@ const VenueCard = props => {
                 image_url: venue.image_url,
                 url: venue.url,
             })
-        }).then(resp => resp.json()).then(result => retrieveVenue(venue));
+        }).then(resp => resp.json()).then(result => {
+            retrieveVenue(result);
+        });
     }
     const retrieveVenue = (venue) => {
-        let venueId = venue.yelp_id ? venue.yelp_id : venue.id;
-        fetch(`http://localhost:3000/venues/${venueId}`).then(resp => resp.json()).then(result => {
+        fetch(`http://localhost:3000/venues/${venue.yelp_id}`).then(resp => resp.json()).then(result => {
             props.updateSelectedVenue(result);
             props.history.push(`/venues/${venue.yelp_id}`);
         })
     }
 
+    const renderCategories = venue => {
+        if (Array.isArray(venue.categories)) {
+            return venue.categories.map(category => {
+                return <li><p onClick={() => {
+                    props.updateSearched(category.title)
+                }}>{category.title}</p></li>
+            })
+        }
 
+        const replaced = String(venue.categories).replace(/=>/g, ':');
+        let categories = JSON.parse(replaced);
+        return categories.map(category => {
+            return <li key={""}><p onClick={() => {
+                return props.deleteSaved ? "" : props.updateSearched(category.title)
+            }}>{category.title}</p></li>
+        })
+    }
+
+    // const deleteButton = () => {
+    //     return (
+    //         <div className="delete-saved" >
+    //             <button className="delete-saved-button" onClick={() => {
+    //                 props.deleteSaved(venue);
+    //             }}>DELETE</button>
+    //         </div>
+    //     )
+    // }
+
+    const visitShow = () => {
+        window.location = `http://localhost:3001/venues/${venue.yelp_id}`;
+    }
     return (
-        <div className="columns is-one-quarter" onClick={() => {
-            //since the yelp_id is assigned once saved to database, if the property exists,
-            //we don't need to make a post request.
-            venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
-        }}>
-            {/* <span data-label={venue.name} className="is-primary is-top is-medium b-tooltip">
-                <figure className="card image">
-                    <div className="text-container">
-                        <img alt={venue.name} data-src={venue.image_url} src={venue.image_url} lazy="loaded"/>
-                        <div className="bottom-left is-hidden-tablet">{venue.name}</div>
-                    </div>
-                </figure>
-            </span> */}
-
-             <div className="venue-card-image-container">
-                <img className="card-image venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+        
+        <div className="columns is-one-quarter" >
+             <div className={props.deleteSaved ? "blog-card blog-card-saved" : "blog-card"}>
+                <img className="photo" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+                <div className="details">
+                    <ul className="tags">
+                        {venue.categories? renderCategories(venue) : null}
+                    </ul>
+                </div>
+                <div className={`description card-${Math.floor(venue.rating)}`}>
+                    <h1 className="venue-card-name">{venue.name}</h1>
+                    <p className="summary">Rated {venue.rating} out of 5</p>
+                        {props.deleteSaved ?
+                            <div className="delete-saved" >
+                                <button className="delete-saved-button" onClick={() => {
+                                    props.deleteSaved(venue);
+                                }}>DELETE</button>
+                            </div> 
+                        : <div className="card-body"><button className="view-button" onClick={() => {
+                                //since the yelp_id is assigned once saved to database, if the property exists,
+                                //we don't need to make a post request.
+                                venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
+                            }}>MORE DETAILS</button>
+                                <br/><br/><br/><br/>           
+                            </div>}
+                        {props.markCompleted ?
+                        <div>
+                            <div className="complete-saved" >
+                                <button className="complete-saved-button" onClick={() => {
+                                    props.markCompleted(venue);
+                                }}>MARK COMPLETE</button>
+                            </div> 
+                            <div>
+                                <button className="review-button" onClick={() => visitShow()}>VIEW</button>
+                            </div> 
+                        </div>
+                        : null}
+                </div>
             </div>
-            <footer className="card-footer">
-                <p className="card-footer-item">{venue.name}</p>
-                <p className="card-footer-item">{venue.categories ? venue.categories[0].title : 'Food'}</p>
-            </footer>
-    </div>
+        </div>
+    //     <div className="columns is-one-quarter" onClick={() => {
+    //         //since the yelp_id is assigned once saved to database, if the property exists,
+    //         //we don't need to make a post request.
+    //         venue.yelp_id ? retrieveVenue(venue) : addVenueToDataBase(venue);
+    //     }}>
+    //          <div className="venue-card">
+    //             <img className="venue-card-image" src={`${venue.image_url}`} alt={`${venue.name}`}/>
+    //             {/* <p className="venue-card-info">Some text about this venue</p> */}
+    //             <p className="venu-card-name">{venue.name}</p>
+    //             <p className="venu-card-categories">{venue.categories ? renderCategories(venue) : null}</p>
+    //         </div>
+    // </div>
     )
 }
 
