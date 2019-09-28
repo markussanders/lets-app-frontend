@@ -20,33 +20,34 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searched: [],
+      currentUser: (JSON.parse(localStorage.getItem('user')) || { user: { id: 1, token: null } }),
       selectedVenue: null,
       selectedEvent: null,
       imgUrl: '',
       loginForm: false,
       signupForm: false,
       auth: { user: {}},
-      currentUser: false,
       currentUserMostSearched: false,
       mostFrequent: [],
       events: false,
+      searchResults: [],
+      noResults: '',
       query: '',
-      noResults: false,
     }
   }
 
-  componentWillMount() {
-    let retrievedUser = localStorage.length > 0 ? JSON.parse(localStorage.user) : false;
-    this.setState({currentUser: retrievedUser})
-  }
+  // componentWillMount() {
+  //   let retrievedUser = localStorage.length > 0 ? JSON.parse(localStorage.user) : false;
+  //   this.setState({currentUser: retrievedUser})
+  // }
 
   updateSearched = childState => {
-    console.log('CHILD STATE =', childState)
+    console.log('CHILD STATE = ', childState.results)
     this.setState({
-      searched: childState.results,
+      searchResults: childState.results,
       events: childState.events,
       noResults: childState.noResults,
+      query: childState.query
     })
   }
 
@@ -59,11 +60,9 @@ class App extends React.Component {
 
   handleLogin = user => {
     this.setState({
-      auth: { user }
+      currentUser: user
     })
     localStorage.setItem('user', JSON.stringify(user))
-    localStorage.setItem('token', user.token)
-    localStorage.setItem('user_id', user.id);
   }
 
   handleSignup = () => {
@@ -79,12 +78,7 @@ class App extends React.Component {
   }
 
   handleLogout = user => {
-    this.setState({
-      auth: { user: {} }
-    })
     localStorage.clear();
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('userId');
   }
 
   fetchVenue = (path) => {
@@ -116,6 +110,7 @@ class App extends React.Component {
   }
 
   render () {
+    console.log('APP STATE no results = ', this.state.noResults)
     return (
     <div>
       <Switch> 
@@ -142,7 +137,11 @@ class App extends React.Component {
                   <Background imgUrl={this.state.imgUrl} />
                   <Suggester updateBackgroundImage={this.updateBackgroundImage} updateSearched={this.updateSearched} currentUser={this.state.currentUser} />
                   <SearchBar {...routeProps} query={this.query} updateSearched={this.updateSearched} currentUser = {this.state.currentUser} suggest={this.suggest}/>
-                  <CardsContainer  noResults={this.state.noResults} searched={this.state.searched} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                  { this.state.noResults ? 
+                    <h2 id="showing-results-for">{this.state.noResults}</h2> 
+                  : 
+                    <CardsContainer  noResults={this.state.noResults} searchResults={this.state.searchResults} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                  }
                 </section>
               </div>
             ) }}
