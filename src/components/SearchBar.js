@@ -11,7 +11,7 @@ class Search extends Component {
       results: [],
       events: false,
       value: '',
-      noResults: false,
+      noResults: '',
     }
   }
 
@@ -22,18 +22,29 @@ class Search extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         content: this.state.query,
-        user_id: (this.props.currentUser.id || 1),
+        user_id: this.props.currentUser.id,
         is_event: this.state.events, 
         category: this.state.value,
       })
     })
       .then(resp => resp.json())
       .then(results => {
-        results.length >= 1 ? this.setState({results}) : this.setState({noResults: true});
-        console.log('this.state = ', this.state)
-        this.props.updateSearched(this.state);
-        this.props.query(this.state.query);
+        if (results.message) {
+          this.setState({
+            noResults: results.message,
+          });
+          this.props.updateSearched(this.state);
+        } else {
+          this.setState({
+            results: results,
+            noResults: '',
+          })
+          this.props.updateSearched(this.state);  
+        }
       })
+  }
+  addResultsToLocalStorage = (results=this.state.searchResults) => {
+    localStorage.setItem('searchResults', results);
   }
   
   handleInputChange = () => {
