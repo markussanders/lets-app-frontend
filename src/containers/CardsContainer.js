@@ -8,38 +8,39 @@ class CardsContainer extends React.Component {
    constructor(props) {
         super(props);
         this.state = {
-            currentUser: (this.props.currentUser || JSON.parse(localStorage.getItem('user'))),
+            currentUser: this.props.currentUser || JSON.parse(localStorage.getItem('user')),
             venues: [],
-            searched: this.props.searched,
+            searchResults: this.props.searchResults || JSON.parse(localStorage.getItem('searchResults')),
+            noResults: this.props.noResults,
             query: this.props.query,
             value: 'relevance',
         }
         this.ref = React.createRef()
     }
 
-    componentDidMount() {
-        this.fetchVenues();
-    }
+    // componentDidMount() {
+    //     // this.fetchVenues();
+    // }
 
-    fetchVenues() {
-        fetch('http://localhost:3000/venues')
-            .then(resp => resp.json())
-            .then(venues => {
-                console.log('venues', venues);
-                this.setState({venues})
-            })
-    }
+    // fetchVenues() {
+    //     fetch('http://localhost:3000/venues')
+    //         .then(resp => resp.json())
+    //         .then(venues => {
+    //             console.log('venues', venues);
+    //             this.setState({venues})
+    //         })
+    // }
 
-    fetchSearches = () => {
-        fetch('http://localhost:3000/searches')
-            .then(resp => resp.json())
-            .then(searches => this.filterSearches(searches));
-    }
+    // fetchSearches = () => {
+    //     fetch('http://localhost:3000/searches')
+    //         .then(resp => resp.json())
+    //         .then(searches => this.filterSearches(searches));
+    // }
 
-    filterSearches = searches => {
-        console.log('FILTER')
-        // return searches.filter(search => search.categoery === this.state.value);
-    }
+    // filterSearches = searches => {
+    //     console.log('FILTER')
+    //     // return searches.filter(search => search.categoery === this.state.value);
+    // }
 
     sortVenues = venues => {
         let param = this.state.value;
@@ -66,7 +67,7 @@ class CardsContainer extends React.Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 content: term,
-                user_id: this.state.currneUser ? this.state.currentUser.id : 1, 
+                user_id: this.state.currrentUser.id, 
             })
         })
         .then(resp => resp.json())
@@ -74,16 +75,16 @@ class CardsContainer extends React.Component {
             this.setState({
                 venues: results, 
                 query: term, 
-                searched: results
-            });
+                searchResults: results
+            }); 
             window.scrollTo(0, this.ref.current.offsetTop);
         })
 
     }
 
     createVenueCards() {
-        if (this.props.searched || this.state.venues) {
-            let venues = this.props.searched.length >= 1 ? this.props.searched : this.state.venues;
+        if (this.props.searchResults) {
+            let venues = this.props.searchResults;
             let uniqueVenues = uniqBy(venues, 'name');
             let sortedVenues = this.sortVenues(uniqueVenues);
             return sortedVenues.map(venue => {
@@ -92,16 +93,16 @@ class CardsContainer extends React.Component {
         }
     }
 
-    createEventCards() {
-        if (this.props.searched) {
-            let events = this.props.searched;
-            let uniqueEvents = uniqBy(events, 'description');
-            uniqueEvents = uniqBy(uniqueEvents, 'business_id');
-            return uniqueEvents.map(event => {
-                return <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} />
-            })
-        }
-    }
+    // createEventCards() {
+    //     if (this.props.searchResults) {
+    //         let events = this.props.searched;
+    //         let uniqueEvents = uniqBy(events, 'description');
+    //         uniqueEvents = uniqBy(uniqueEvents, 'business_id');
+    //         return uniqueEvents.map(event => {
+    //             return <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} />
+    //         })
+    //     }
+    // }
     handleChange = event => {
         this.setState({value: event.target.value});
         // this.sortVenues(this.state.venues);
@@ -110,30 +111,37 @@ class CardsContainer extends React.Component {
     render() {
         return (
             <div className="" id="cards-container" ref={this.ref}>
-                {this.state.searched.length > 1?
-                    <div id="results-container">
-                        <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.state.query}"`}</h2>
-                    </div> : <h1 id="trending">TRENDING: </h1 >
-                }
-                <div id="sort-by-dropdown">
-                    <h6 id="sort-by">Sort by: </h6>
-                    <select id="select" value={this.state.value} onChange={this.handleChange}>
-                        <option value="relevance">--</option>
-                        <option value="rating">Rating</option>
-                        <option value="name">Name (A-Z)</option>
-                        <option value="reverse"> Name (Z- A)</option>
-                    </select>
-                </div>
-
-                {this.props.selectedEvents ?
-                <div id="event-cards-container">
-                     {this.createEventCards()}
-                </div>
-                :
-                <div className = "columns is-multiline is-mobile is-centered">
-                     {this.createVenueCards()}
-                </div>
-                }
+                { this.props.searchResults.length >= 1 ?
+                    <div>
+                        <div id="results-container">
+                            <h2 id="showing-results-for">{`SHOWING RESULTS FOR "${this.state.query}"`}</h2>
+                        </div> 
+                        <div id="sort-by-dropdown">
+                            <h6 id="sort-by">Sort by: </h6>
+                            <select id="select" value={this.state.value} onChange={this.handleChange}>
+                                <option value="relevance">--</option>
+                                <option value="rating">Rating</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="reverse"> Name (Z- A)</option>
+                            </select>
+                        </div>
+                        <div className = "columns is-multiline is-mobile is-centered">
+                            {this.createVenueCards()}
+                        </div>                       
+{/* 
+                        {this.props.selectedEvents ?
+                        <div id="event-cards-container">
+                            {this.createEventCards()}
+                        </div>
+                        :
+                        <div className = "columns is-multiline is-mobile is-centered">
+                            {this.createVenueCards()}
+                        </div>
+                        } */}
+                    </div>
+                : null
+            }
+    
             </div>
         )
     }
