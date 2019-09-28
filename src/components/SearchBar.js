@@ -90,16 +90,16 @@ class Search extends Component {
             />
   
             <select value={this.state.value} onChange={this.handleChange}>
-              <option value="all">All Categories</option>
+              {/* <option value="all">All Categories</option> */}
               <option value="food">Food</option>
               <option value="drinks">Drinks</option>
-              <option value="music">Music</option>
-              <option value="movies">Movies/Visual Arts</option>
+              {/* <option value="music">Music</option>
+              <option value="movies">Movies/Visual Arts</option> */}
             </select>
 
             <div id="search-bar-buttons">
-              <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Venues</button>
-              <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button>
+              <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Search</button>
+              {/* <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button> */}
             </div>
           {/* <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button> */}
         </form>
