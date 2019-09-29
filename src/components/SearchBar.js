@@ -39,13 +39,52 @@ class Search extends Component {
             results: results,
             noResults: '',
           })
+          this.recordCategories(results);
           this.props.updateSearched(this.state);  
         }
       })
   }
-  addResultsToLocalStorage = (results=this.state.searchResults) => {
-    localStorage.setItem('searchResults', results);
+
+  recordCategories = searchResults => {
+    let categoriesCount = {};
+    searchResults.forEach(result => {
+      result.categories.forEach(category => {
+        categoriesCount[category.title] = (categoriesCount[category.title] || 0) + 1;
+      })
+    })
+    console.log(categoriesCount)
   }
+
+  fetchUserSearchHistory = () => {
+    fetch(`http:localhost:3000/users/${this.props.currentUser.id}`)
+      .then(resp => resp.json())
+      .then(user => user.search_history);
+  }
+
+  appendCategoriesToUser = (userSearchHistory, categoriesCount) => {
+    for (let key in categoriesCount) {
+      if (userSearchHistory.hasOwnProperty(key)) {
+        userSearchHistory[key] = userSearchHistory[key] + categoriesCount[key];
+      } else {
+        userSearchHistory[key] = categoriesCount[key];
+      }
+    }
+
+  }
+
+  updateUserSearchHistory = updatedHistory => {
+    fetch(`http:localhost:3000/users/${this.props.currentUser.id}`, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        search_history: updatedHistory
+      }),
+    }).then(resp => resp.json()).then(console.log);
+  }
+
+  // addResultsToLocalStorage = (results=this.state.searchResults) => {
+  //   localStorage.setItem('searchResults', results);
+  // }
   
   handleInputChange = () => {
     this.setState({

@@ -110,7 +110,7 @@ class App extends React.Component {
   }
 
   render () {
-    console.log('APP STATE no results = ', this.state.noResults)
+    console.log('APP STATE', this.state)
     return (
     <div>
       <Switch> 
@@ -140,7 +140,7 @@ class App extends React.Component {
                   { this.state.noResults ? 
                     <h2 id="showing-results-for">{this.state.noResults}</h2> 
                   : 
-                    <CardsContainer  noResults={this.state.noResults} searchResults={this.state.searchResults} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                   this.state.searchResults.length >= 1 ? <CardsContainer  noResults={this.state.noResults} searchResults={this.state.searchResults} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/> : null
                   }
                 </section>
               </div>
