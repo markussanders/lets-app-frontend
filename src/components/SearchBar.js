@@ -12,7 +12,11 @@ class Search extends Component {
       events: false,
       value: '',
       noResults: '',
-    }
+      userSearchHistory: {},
+    };
+  }
+  componentDidMount() {
+    this.fetchUserSearchHistory();
   }
 
   getInfo = () => {
@@ -52,13 +56,21 @@ class Search extends Component {
         categoriesCount[category.title] = (categoriesCount[category.title] || 0) + 1;
       })
     })
-    console.log(categoriesCount)
+    console.log('categories count = ', categoriesCount);
+    this.appendCategoriesToUser(this.state.userSearchHistory, categoriesCount);
   }
 
   fetchUserSearchHistory = () => {
-    fetch(`http:localhost:3000/users/${this.props.currentUser.id}`)
+    console.log('FETCHING')
+    fetch(`http://localhost:3000/users/${this.props.currentUser.id}`)
       .then(resp => resp.json())
-      .then(user => user.search_history);
+      .then(user => {
+        if (user.search_history) { 
+          let format = String(user.search_history).replace(/=>/g, ':');
+          console.log('format', format);
+          this.setState({userSearchHistory: JSON.parse(format)});
+        }
+      });
   }
 
   appendCategoriesToUser = (userSearchHistory, categoriesCount) => {
@@ -69,17 +81,21 @@ class Search extends Component {
         userSearchHistory[key] = categoriesCount[key];
       }
     }
+    let updatedHistory = {...userSearchHistory};
+    console.log('updatedHistory = ', updatedHistory);
+    this.updateUserSearchHistory(updatedHistory);
 
   }
 
   updateUserSearchHistory = updatedHistory => {
-    fetch(`http:localhost:3000/users/${this.props.currentUser.id}`, {
+    fetch(`http://localhost:3000/users/${this.props.currentUser.id}`, {
       method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
+        user_id: this.props.currentUser.id,
         search_history: updatedHistory
       }),
-    }).then(resp => resp.json()).then(console.log);
+    }).then(resp => resp.json()).then(user => console.log('UPDATE RESP = ', user));
   }
 
   // addResultsToLocalStorage = (results=this.state.searchResults) => {

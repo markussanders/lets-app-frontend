@@ -20,7 +20,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: (JSON.parse(localStorage.getItem('user')) || { user: { id: 1, token: null } }),
+      currentUser: (JSON.parse(localStorage.getItem('user')) || { id: 1, token: null }),
       selectedVenue: null,
       selectedEvent: null,
       imgUrl: '',
