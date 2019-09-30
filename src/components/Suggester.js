@@ -16,9 +16,9 @@ class Suggester extends React.Component {
 
         };
     }
-    componentDidMount() {
-      this.fetchSearches();
-    }
+    // componentDidMount() {
+    //   this.fetchSearches();
+    // }
 
     suggest = term => {
         switch (term) {
@@ -35,7 +35,6 @@ class Suggester extends React.Component {
             break;
 
             case 'drinks':
-              console.log('HERE');
               this.setState({events: false});
               if (this.state.currentUserMostSearched) {
                 let barSearches = this.filterSearches(this.state.userSearches, 'drinks');
@@ -49,77 +48,77 @@ class Suggester extends React.Component {
               }
             break;
 
-            case 'concerts':
-              this.setState({events: true});
-              let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
-              this.search(true, concerts[Math.floor(Math.random() * concerts.length)]);
-            break;
+            // case 'concerts':
+            //   this.setState({events: true});
+            //   let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
+            //   this.search(true, concerts[Math.floor(Math.random() * concerts.length)]);
+            // break;
 
-            case 'performances':
-              this.setState({events: true});
-              let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
-              this.search(true,performance[Math.floor(Math.random() * performances.length)]);             
-            break;
+            // case 'performances':
+            //   this.setState({events: true});
+            //   let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
+            //   this.search(true,performance[Math.floor(Math.random() * performances.length)]);             
+            // break;
 
             default:
             return null;
         }
   }
 
-  fetchSearches = () => {
-    if (this.state.currentUser) {
-      fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
-        .then(resp => resp.json())
-        .then(user => {
-          this.setState({currentUserMostSearched: true, userSearches: user.searches});
-        })
-        console.log('GOT HERE', this.state)
-    } else {
-      fetch('http://localhost:3000/searches')
-        .then(resp => resp.json())
-        .then(searches => this.getMostFrequentSearch(searches));
-        this.setState({currentUserMostSearched: false});
-    }
-  }
+  // fetchSearches = () => {
+  //   if (this.state.currentUser) {
+  //     fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
+  //       .then(resp => resp.json())
+  //       .then(user => {
+  //         this.setState({currentUserMostSearched: true, userSearches: user.searches});
+  //       })
+  //       console.log('GOT HERE', this.state)
+  //   } else {
+  //     fetch('http://localhost:3000/searches')
+  //       .then(resp => resp.json())
+  //       .then(searches => this.getMostFrequentSearch(searches));
+  //       this.setState({currentUserMostSearched: false});
+  //   }
+  // }
 
-  getMostFrequentSearch = searches => {
+  // getMostFrequentSearch = searches => {
 
-    const count = searches.reduce((count, term) => {
-      count[term.content] = (count[term.content] || 0) + 1;
-      return count;
-    }, {});
-    // const mostFrequent = Object.keys(count).reduce((a, b) => count[a] > count[b] ? a : b);
-    const mostFrequent = Object.keys(count).sort((a, b) => count[b] - count[a]);
+  //   const count = searches.reduce((count, term) => {
+  //     count[term.content] = (count[term.content] || 0) + 1;
+  //     return count;
+  //   }, {});
+  //   // const mostFrequent = Object.keys(count).reduce((a, b) => count[a] > count[b] ? a : b);
+  //   const mostFrequent = Object.keys(count).sort((a, b) => count[b] - count[a]);
 
-    console.log(mostFrequent, Object.keys(count));
+  //   console.log(mostFrequent, Object.keys(count));
     
-    if (mostFrequent) {
-      this.setState({mostFrequent: mostFrequent[0]});
-    } 
-    return mostFrequent[0];
-  }
+  //   if (mostFrequent) {
+  //     this.setState({mostFrequent: mostFrequent[0]});
+  //   } 
+  //   return mostFrequent[0];
+  // }
 
-  filterSearches = (searches, term) => {
-    return searches.filter(search => search.category === term);
-  }
+  // filterSearches = (searches, term) => {
+  //   return searches.filter(search => search.category === term);
+  // }
 
-  search = async (isEvent=false, content=this.state.mostFrequent, category='all') => {
-     const resp = await fetch('http://localhost:3000/searches', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: content,
-        user_id: (this.state.currentUser.id || 1),
-        is_event: isEvent,
-        category: category
-      })
-    });
-    const result = await resp.json();
-    console.log('result = ', result);
-    this.setState({results: result});
-    console.log('search state = ', this.state);
-    this.props.updateSearched(this.state);
-  }
+  // search = async (isEvent=false, content=this.state.mostFrequent, category='all') => {
+  //    const resp = await fetch('http://localhost:3000/searches', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       content: content,
+  //       user_id: (this.state.currentUser.id || 1),
+  //       is_event: isEvent,
+  //       category: category
+  //     })
+  //   });
+  //   const result = await resp.json();
+  //   console.log('result = ', result);
+  //   this.setState({results: result});
+  //   console.log('search state = ', this.state);
+  //   this.props.updateSearched(this.state);
+  // }
 
     render() {
         return (

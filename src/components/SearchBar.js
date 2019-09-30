@@ -10,7 +10,7 @@ class Search extends Component {
       query: '',
       results: [],
       events: false,
-      value: '',
+      value: 'food',
       noResults: '',
       userSearchHistory: {},
     };
@@ -50,40 +50,41 @@ class Search extends Component {
   }
 
   recordCategories = searchResults => {
+    let searchCategories = {};
     let categoriesCount = {};
     searchResults.forEach(result => {
       result.categories.forEach(category => {
         categoriesCount[category.title] = (categoriesCount[category.title] || 0) + 1;
       })
     })
-    console.log('categories count = ', categoriesCount);
-    this.appendCategoriesToUser(this.state.userSearchHistory, categoriesCount);
+    searchCategories[this.state.value] = categoriesCount;
+    console.log('search categories = ', searchCategories);
+    //Adding search category to user, next step update subsequent methods after append categories to users
+    this.appendCategoriesToUser(this.state.userSearchHistory, searchCategories);
   }
 
   fetchUserSearchHistory = () => {
-    console.log('FETCHING')
     fetch(`http://localhost:3000/users/${this.props.currentUser.id}`)
       .then(resp => resp.json())
       .then(user => {
         if (user.search_history) { 
           let format = String(user.search_history).replace(/=>/g, ':');
-          console.log('format', format);
           this.setState({userSearchHistory: JSON.parse(format)});
         }
       });
   }
 
-  appendCategoriesToUser = (userSearchHistory, categoriesCount) => {
-    for (let key in categoriesCount) {
-      if (userSearchHistory.hasOwnProperty(key)) {
-        userSearchHistory[key] = userSearchHistory[key] + categoriesCount[key];
-      } else {
-        userSearchHistory[key] = categoriesCount[key];
+  appendCategoriesToUser = (userSearchHistory, searchCategories) => {
+
+      for (let cat in searchCategories) {
+        // userSearchHistory[this.state.value] = userSearchHistory[this.state.value] || {};
+        if (!userSearchHistory.hasOwnProperty(this.state.value)) {
+          userSearchHistory[this.state.value] = {};
+        }
+        let subCats = userSearchHistory[this.state.value];
+        subCats[cat] ? subCats[cat] += searchCategories[cat] : subCats[cat] = searchCategories[cat];
       }
-    }
-    let updatedHistory = {...userSearchHistory};
-    console.log('updatedHistory = ', updatedHistory);
-    this.updateUserSearchHistory(updatedHistory);
+    this.updateUserSearchHistory(userSearchHistory);
 
   }
 
@@ -145,7 +146,6 @@ class Search extends Component {
             />
   
             <select value={this.state.value} onChange={this.handleChange}>
-              {/* <option value="all">All Categories</option> */}
               <option value="food">Food</option>
               <option value="drinks">Drinks</option>
               {/* <option value="music">Music</option>
