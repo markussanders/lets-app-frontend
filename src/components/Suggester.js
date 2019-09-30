@@ -30,6 +30,7 @@ class Suggester extends React.Component {
           let format = String(user['search_history']).replace(/=>/g, ':');
           let parsed = JSON.parse(format);
           console.log(parsed)
+          console.log('parsed ====================', parsed);
           this.setState({userSearchHistory: parsed});
         })
     }
@@ -37,14 +38,50 @@ class Suggester extends React.Component {
     suggest = term => {
       switch (term) {
         case 'food':
-          let foodHistory = this.state.userSearchHistory['food']['food'];
+          let sample = {
+            "Salad" : 14,
+            "Vegetarian" : 11,
+            "American (New)" : 5,
+            "Vegan" : 4,
+            "Gluten-Free" : 5,
+            "Asian Fusion" :1,
+            "Cafes" :  1,
+            "Breakfast & Brunch" : 1,
+            "Burgers" : 2,
+            "Sandwiches":  3,
+            "Juice Bars & Smoothies" : 1,
+            "Wraps" : 1,
+            "Fast Food" : 2,
+            "Poke" : 1,
+            "Sushi Bars" : 1,
+            "Delis" : 1
+          }
+          console.log('user.searchHistory', this.state.userSearchHistory)
+          let foodHistory = (this.state.userSearchHistory['food']['food'] || sample);
           let sortedFoods = Object.keys(foodHistory).sort((a, b) => foodHistory[b] - foodHistory[a]);
           let topThreeFoods = take(sortedFoods, 3);
+          console.log('top 3 foods = ', topThreeFoods);
           let foodSuggestion = topThreeFoods[Math.floor(Math.random() * topThreeFoods.length)];
-          this.setState({query: foodSuggestion});
+          console.log('Food suggestion = ', foodSuggestion);
+          this.setState({
+            query: foodSuggestion
+          });
           this.search(foodSuggestion);
           break;
         case 'drinks':
+          let sampleDrinks = {
+            "American(New)": 4,
+            "American(Traditional)": 1,
+            "Bars": 4,
+            "Beer Bar": 1,
+            "Burgers": 1,
+            "Cocktail Bars": 15,
+            'Distilleries': 1,
+            "Dive Bars": 1,
+            "Lounges": 3,
+            "Venues & Event Spaces": 2,
+            "Wine Bars": 1,
+          }
           let drinksHistory = this.state.userSearchHistory['drinks']['drinks'];
           let sortedDrinks = Object.keys(drinksHistory).sort((a, b) => drinksHistory[b] - drinksHistory[a]);
           let topFiveDrinks = take(sortedDrinks, 5);

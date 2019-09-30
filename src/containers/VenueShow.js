@@ -13,10 +13,14 @@ const getLocation = venueInfo => {
     console.log(str);
 }
 const getCoordinates = venueInfo => {
-    let coordinates = venueInfo.venue.coordinates.replace(/=>/g, ':');
-    let output = JSON.parse(coordinates);
-    console.log('coordinates', output);
-    return coordinates;
+    console.log('venueInfo.venue.coordinates', venueInfo.venue.coordinates)
+    if (venueInfo.venue.coordinates) {
+        let coordinates = venueInfo.venue.coordinates.replace(/=>/g, ':');
+        let output = JSON.parse(coordinates);
+        console.log('coordinates', output);
+        return coordinates;
+    }
+    return false;
 }
 
 
@@ -41,7 +45,8 @@ class VenueShow extends React.Component {
             .then(resp => resp.json())
             .then(venue => {
                 this.setState({
-                    venue: venue
+                    venue: venue, 
+                    hasCordinates: getCoordinates(this.props.venue),
                 })
             })
     }
@@ -186,7 +191,7 @@ class VenueShow extends React.Component {
                     }}>SHARE</h4>
                 </div>
                 <div>
-                    <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} />
+                    {this.state.hasCordinates ? <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} /> : null}
                 </div>
                 </div> : null}
             </div>

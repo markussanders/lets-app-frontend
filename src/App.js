@@ -205,7 +205,7 @@ class App extends React.Component {
           }} />
 
           <Route exact path='/users/:id' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="profile">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
@@ -225,7 +225,7 @@ class App extends React.Component {
           } />
 
           <Route exact path='/users/:id/saved' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="saved">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
@@ -244,7 +244,7 @@ class App extends React.Component {
             }
           } />
           <Route exact path='/users/:id/calendar' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="saved">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
