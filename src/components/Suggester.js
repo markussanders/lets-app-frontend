@@ -1,4 +1,6 @@
 import React from 'react';
+import take from 'lodash/take';
+
 
 
 
@@ -9,61 +11,108 @@ class Suggester extends React.Component {
         this.state = {
             currentUser: this.props.currentUser,
             currentUserMostSearched: false,
-            userSearches: [],
+            userSearchHistory: '',
             mostFrequent: '',
             events: false,
             results: [],
-
+            query: '',
         };
     }
-    // componentDidMount() {
-    //   this.fetchSearches();
+    componentDidMount() {
+      this.fetchUserSearchHistory();
+    }
+
+
+    fetchUserSearchHistory() {
+      fetch(`http://localhost:3000/users/${this.state.currentUser.id}`)
+        .then(resp => resp.json()).then(user => {
+          console.log(user['search_history'])
+          let format = String(user['search_history']).replace(/=>/g, ':');
+          let parsed = JSON.parse(format);
+          console.log(parsed)
+          this.setState({userSearchHistory: parsed});
+        })
+    }
+  
+    suggest = term => {
+      switch (term) {
+        case 'food':
+          let history = this.state.userSearchHistory['food']['food'];
+          let sorted = Object.keys(history).sort((a, b) => history[b] - history[a]);
+          let topThree = take(sorted, 3);
+          let suggestion = topThree[Math.floor(Math.random() * topThree.length)];
+          this.setState({query: suggestion});
+          this.search(suggestion);
+        break;
+        default: 
+          console.log('DEFAULT');
+      }
+    }
+
+    // passSearch = term => {
+
     // }
 
-    suggest = term => {
-        switch (term) {
-            case 'food':
-              this.setState({events: false});
-              if (this.state.currentUserMostSearched) {
-                let foodSearches = this.filterSearches(this.state.userSearches, 'food');
-                let mostFrequent = this.getMostFrequentSearch(foodSearches);
-                this.search(false, mostFrequent, 'food');
-              } else {  
-                let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nachos', 'hotdog', 'fries', 'ice cream', 'burrito'];
-                this.search(false,foods[Math.floor(Math.random() * foods.length)]);
-              }
-            break;
+    search = async (suggestion) => {
+        const resp = await fetch('http://localhost:3000/searches', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: suggestion,
+          user_id: this.props.currentUser.id,
+        })
+      });
+      const result = await resp.json();
+      console.log('result = ', result);
+      this.setState({results: result});
+      console.log('search state = ', this.state);
+      this.props.updateSearched(this.state);
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //   suggest = term => {
+  //       switch (term) {
+  //           case 'food':
+  //             this.setState({events: false});
+  //             if (this.state.currentUserMostSearched) {
+  //               let foodSearches = this.filterSearches(this.state.userSearches, 'food');
+  //               let mostFrequent = this.getMostFrequentSearch(foodSearches);
+  //               this.search(false, mostFrequent, 'food');
+  //             } else {  
+  //               let foods = ['pizza', 'food', 'pasta', 'chicken', 'burger', 'nachos', 'hotdog', 'fries', 'ice cream', 'burrito'];
+  //               this.search(false,foods[Math.floor(Math.random() * foods.length)]);
+  //             }
+  //           break;
 
-            case 'drinks':
-              this.setState({events: false});
-              if (this.state.currentUserMostSearched) {
-                let barSearches = this.filterSearches(this.state.userSearches, 'drinks');
-                console.log('BARSEARCHES = ', barSearches);
-                let mostFrequent = this.getMostFrequentSearch(barSearches);
-                console.log('MOSTFREQ = ', mostFrequent);
-                this.search(false, mostFrequent, 'drinks');
-              } else {
-                let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
-                this.search(false,bars[Math.floor(Math.random() * bars.length)]);
-              }
-            break;
+  //           case 'drinks':
+  //             this.setState({events: false});
+  //             if (this.state.currentUserMostSearched) {
+  //               let barSearches = this.filterSearches(this.state.userSearches, 'drinks');
+  //               console.log('BARSEARCHES = ', barSearches);
+  //               let mostFrequent = this.getMostFrequentSearch(barSearches);
+  //               console.log('MOSTFREQ = ', mostFrequent);
+  //               this.search(false, mostFrequent, 'drinks');
+  //             } else {
+  //               let bars = ['beer', 'wine', 'cocktails', 'tequila', 'vineyard', 'brewery', 'bar', 'pub', 'cocktail lounge', 'rooftop bar'];
+  //               this.search(false,bars[Math.floor(Math.random() * bars.length)]);
+  //             }
+  //           break;
 
-            // case 'concerts':
-            //   this.setState({events: true});
-            //   let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
-            //   this.search(true, concerts[Math.floor(Math.random() * concerts.length)]);
-            // break;
+  //           // case 'concerts':
+  //           //   this.setState({events: true});
+  //           //   let concerts = ['music', 'classical', 'rap', 'hip-hop', 'pop', 'musical', 'show', 'recital', 'show']
+  //           //   this.search(true, concerts[Math.floor(Math.random() * concerts.length)]);
+  //           // break;
 
-            // case 'performances':
-            //   this.setState({events: true});
-            //   let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
-            //   this.search(true,performance[Math.floor(Math.random() * performances.length)]);             
-            // break;
+  //           // case 'performances':
+  //           //   this.setState({events: true});
+  //           //   let performances = ['comedian', 'player', 'fire-breather', 'karaoke', 'performance', 'live', 'performer'];
+  //           //   this.search(true,performance[Math.floor(Math.random() * performances.length)]);             
+  //           // break;
 
-            default:
-            return null;
-        }
-  }
+  //           default:
+  //           return null;
+  //       }
+  // }
 
   // fetchSearches = () => {
   //   if (this.state.currentUser) {
@@ -119,11 +168,10 @@ class Suggester extends React.Component {
   //   console.log('search state = ', this.state);
   //   this.props.updateSearched(this.state);
   // }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     render() {
         return (
-        <div id="suggester-container">
-            
+        <div id="suggester-container">   
             <h2 className="title is-3" id="i-want-to">LET'S... </h2>
             <ul id="suggester-options">
                 <li className="suggester-option" id="eat-button" onMouseEnter={()=> {
@@ -134,10 +182,10 @@ class Suggester extends React.Component {
                 }} onClick={() =>this.suggest('drinks')}>DRINK</li>
                 <li className="suggester-option" id="listen-button" onMouseEnter={()=> {
                     this.props.updateBackgroundImage('https://www.bumpclubandbeyond.com/wp-content/uploads/2018/05/concert-3387324_960_720-960x420.jpg')
-                }} onClick={() => this.suggest('concerts')}>LISTEN</li>
+                }} onClick={() => alert('Coming soon!')}>LISTEN</li>
                 <li className="suggester-option" id="watch-button" onMouseEnter={()=> {
                     this.props.updateBackgroundImage('https://www.signatureliving.co.uk/wp-content/uploads/2019/03/Fire-breathing-Voodoo.jpg')
-                }} onClick={() => this.suggest('performances')}>WATCH</li>
+                }} onClick={() => alert('Coming soon!')}>WATCH</li>
                 {/* <div className="random-bg has-background-primary" id="image-container"></div> */}
             </ul>
         </div>
