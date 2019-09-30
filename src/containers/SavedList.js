@@ -89,6 +89,14 @@ class SavedList extends React.Component {
     createVenueCards = () => {
         let incompletedIDs = this.state.incomplete.map(el => el.venue_id);
         let venues = this.state.savedList.filter(el => incompletedIDs.includes(el.id));
+        if (venues.length === 0 ) {
+            return (
+                <div>
+                    <h2 id="empty-saved-list">Your list is currently empty!</h2>
+                    <h4 id="empty-saved-prompt">Businesses you've saved will show up here.</h4>
+                </div>
+            )
+        }
         return venues.map(venue => {
             return <VenueCard venue={venue} key={venue.id} deleteSaved={this.deleteSaved} markCompleted={this.markCompleted}/> 
         })

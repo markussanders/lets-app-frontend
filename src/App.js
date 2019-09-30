@@ -14,6 +14,7 @@ import SavedList from './containers/SavedList';
 import Profile from './containers/Profile';
 import Signup from './components/Signup';
 import UserCalendar from './containers/UserCalendar';
+import About from './components/About';
 
 class App extends React.Component {
 
@@ -262,6 +263,14 @@ class App extends React.Component {
                 <Redirect to='/home'/>
             }
           } />
+           <Route exact path='/about' render={(routeProps) => {
+                 return ( 
+                  <section>
+                    <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm}handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                    <About history={routeProps.history}/>
+                  </section>
+                  )
+               }} /> 
      </Switch>
     </div>
   );

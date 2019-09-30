@@ -12,10 +12,10 @@ const getLocation = venueInfo => {
     let str = locationObj.address1.split(' ').join('+')
     console.log(str);
 }
-const getCoordinates = venueInfo => {
-    console.log('venueInfo.venue.coordinates', venueInfo.venue.coordinates)
-    if (venueInfo.venue.coordinates) {
-        let coordinates = venueInfo.venue.coordinates.replace(/=>/g, ':');
+const getCoordinates = venue => {
+    console.log('venueInfo.venue.coordinates', venue)
+    if (venue) {
+        let coordinates = venue.venue.coordinates.replace(/=>/g, ':');
         let output = JSON.parse(coordinates);
         console.log('coordinates', output);
         return coordinates;
@@ -34,10 +34,28 @@ class VenueShow extends React.Component {
             path: this.props.venuePath,
             active: false,
             saved: null,
+            coordinates: getCoordinates(this.props.venue),
         };
         this.fetchVenue(this.props.path);
 
     }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+            // console.log('HERE')
+            // let coordinates = this.state.venue.venue.coordinates.replace(/=>/g, ':');
+            // let output = JSON.parse(coordinates);
+            // console.log('coordinates', output);
+            // this.setState({coordinates});
+    }
+
+    checkForCoordinates = () => {
+        return this.state.coordinates ? true : false;
+    }
+
+    // setCoordinates = () => {
+    //     let coordinates = getCoordinates(this.props.venue);
+    //     this.setState({coordinates});
+    // }
 
     fetchVenue = (path) => {
         console.log('PATH= ',path)
@@ -46,7 +64,6 @@ class VenueShow extends React.Component {
             .then(venue => {
                 this.setState({
                     venue: venue, 
-                    hasCordinates: getCoordinates(this.props.venue),
                 })
             })
     }
@@ -127,9 +144,6 @@ class VenueShow extends React.Component {
         }).then(resp => resp.json()).then(message => console.log(message));
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
 
     // renderLocationObj = () => {
     //     if (this.state.venue) {
@@ -191,7 +205,7 @@ class VenueShow extends React.Component {
                     }}>SHARE</h4>
                 </div>
                 <div>
-                    {this.state.hasCordinates ? <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} /> : null}
+                    {this.checkForCoordinates() ? <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} /> : null}
                 </div>
                 </div> : null}
             </div>

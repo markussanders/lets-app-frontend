@@ -9,7 +9,7 @@ class Suggester extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            currentUser: this.props.currentUser,
+            currentUser: (this.props.currentUser || { id: 1, token: null }),
             currentUserMostSearched: false,
             userSearchHistory: '',
             mostFrequent: '',
