@@ -37,13 +37,24 @@ class Suggester extends React.Component {
     suggest = term => {
       switch (term) {
         case 'food':
-          let history = this.state.userSearchHistory['food']['food'];
-          let sorted = Object.keys(history).sort((a, b) => history[b] - history[a]);
-          let topThree = take(sorted, 3);
-          let suggestion = topThree[Math.floor(Math.random() * topThree.length)];
-          this.setState({query: suggestion});
-          this.search(suggestion);
-        break;
+          let foodHistory = this.state.userSearchHistory['food']['food'];
+          let sortedFoods = Object.keys(foodHistory).sort((a, b) => foodHistory[b] - foodHistory[a]);
+          let topThreeFoods = take(sortedFoods, 3);
+          let foodSuggestion = topThreeFoods[Math.floor(Math.random() * topThreeFoods.length)];
+          this.setState({query: foodSuggestion});
+          this.search(foodSuggestion);
+          break;
+        case 'drinks':
+          let drinksHistory = this.state.userSearchHistory['drinks']['drinks'];
+          let sortedDrinks = Object.keys(drinksHistory).sort((a, b) => drinksHistory[b] - drinksHistory[a]);
+          let topFiveDrinks = take(sortedDrinks, 5);
+          console.log('top 3 = ', topFiveDrinks);
+          let drinksSuggestion = topFiveDrinks[Math.floor(Math.random() * topFiveDrinks.length)];
+          this.setState({
+            query: drinksSuggestion
+          });
+          this.search(drinksSuggestion);
+          break;
         default: 
           console.log('DEFAULT');
       }
