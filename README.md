@@ -5,3 +5,6 @@
 'LET'S___.' is a bucket-listing / Yelp clone application that was created to help users find things to do based on their search history. 
 
 This app was created using Ruby on Rails and React.
+
+
+Link to backend: https://github.com/markussanders/lets-app-backend-v2
