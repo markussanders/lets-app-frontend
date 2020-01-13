@@ -148,6 +148,31 @@
   margin-right: auto;
 }
 
+#about-title {
+  margin-top: 10%;
+  margin-bottom: 5%;
+  text-align: center;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 3em;
+}
+
+#about-title-text {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#about-text {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.about-content {
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.5em;
+  color: rgb(123, 123, 123)
+}
+
 #venue-show-reviews {
   margin-top: 10%;
   padding: 3%;
@@ -746,9 +771,23 @@
   font-family: 'Quicksand', sans-serif;
 }
 
+#empty-saved-list {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 1em;
+  padding-right: 1em;
+  color: rgb(131, 11, 11);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2em;
+}
 
-
-
+#empty-saved-prompt {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 4em;
+  padding-right: 1em;
+  font-family: 'Quicksand', sans-serif;
+}
 
 
 

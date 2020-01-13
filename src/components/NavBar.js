@@ -37,7 +37,7 @@ import lets from '../lets.png'
             <div id='nav-bar' className="breadcrumb is-right">
                 <div id="logo-and-nav">
                     <img className="logo" src={lets} alt="logo"/>
-                    {props.currentUser.id ? loggedIn : notLoggedIn}
+                    {props.currentUser.id !== 1 ? loggedIn : notLoggedIn}
                 </div>
             </div>
         </nav>

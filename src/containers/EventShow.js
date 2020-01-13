@@ -21,7 +21,6 @@ class EventShow extends React.Component {
     }
 
     render() {
-        console.log('EVENT = ', this.state.event)
         return (
             <div>
                 {this.renderURL()}

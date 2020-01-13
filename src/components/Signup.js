@@ -53,7 +53,6 @@ class Signup extends React.Component {
         e.preventDefault();
         Api.signup(this.state)
         .then(data => {
-            console.log('DATA =', data)
             if (data.error) {
             this.setState({
                 error: true,
