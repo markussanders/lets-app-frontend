@@ -23,7 +23,6 @@ class App extends React.Component {
     this.state = {
       currentUser: (JSON.parse(localStorage.getItem('user')) || { id: 1, token: null }),
       selectedVenue: null,
-      selectedEvent: null,
       imgUrl: '',
       loginForm: false,
       signupForm: false,
@@ -37,16 +36,10 @@ class App extends React.Component {
     }
   }
 
-  // componentWillMount() {
-  //   let retrievedUser = localStorage.length > 0 ? JSON.parse(localStorage.user) : false;
-  //   this.setState({currentUser: retrievedUser})
-  // }
-
   updateSearched = childState => {
-    console.log('CHILD STATE = ', childState.results)
     this.setState({
-      searchResults: childState.results,
       events: childState.events,
+      searchResults: childState.results,
       noResults: childState.noResults,
       query: childState.query
     })
@@ -111,7 +104,6 @@ class App extends React.Component {
   }
 
   render () {
-    console.log('APP STATE', this.state)
     return (
     <div>
       <Switch> 

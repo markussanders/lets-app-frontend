@@ -14,7 +14,6 @@ class Profile extends React.Component {
     }
 
     render() {
-        console.log(this.state.currentUser);
         return (
             <div>
                 <div className="back-button-container" onClick={() => this.props.history.goBack()}><img src={backbutton} alt="" className="back-button" />GO BACK</div>

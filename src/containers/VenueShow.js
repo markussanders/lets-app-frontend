@@ -8,16 +8,12 @@ const getLocation = venueInfo => {
     let location = venueInfo.venue.location.replace(/=>/g, ':');
     let replaced = location.replace(/nil/g, '""');
     let locationObj = JSON.parse(replaced);
-    console.log(locationObj);
     let str = locationObj.address1.split(' ').join('+')
-    console.log(str);
 }
 const getCoordinates = venue => {
-    console.log('venueInfo.venue.coordinates', venue)
     if (venue) {
         let coordinates = venue.venue.coordinates.replace(/=>/g, ':');
         let output = JSON.parse(coordinates);
-        console.log('coordinates', output);
         return coordinates;
     }
     return false;
@@ -58,7 +54,6 @@ class VenueShow extends React.Component {
     // }
 
     fetchVenue = (path) => {
-        console.log('PATH= ',path)
         fetch(`http://localhost:3000${this.state.path}`)
             .then(resp => resp.json())
             .then(venue => {
@@ -149,7 +144,6 @@ class VenueShow extends React.Component {
     //     if (this.state.venue) {
     //         const venueInfo = this.state.venue;
     //         let location = venueInfo.venue.location;
-    //         console.log('LOCATION =', location);
     //     }
     // }
     render () {
@@ -164,7 +158,6 @@ class VenueShow extends React.Component {
         //         <button class="modal-close is-large" aria-label="close"></button>
         //     </div>
         // )
-        console.log("state =", this.state);
         return (
             <div id="venue-show-page">
                 {this.state.venue ? 

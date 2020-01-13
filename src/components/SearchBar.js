@@ -15,12 +15,15 @@ class Search extends Component {
       userSearchHistory: {},
     };
   }
+
   componentDidMount() {
     this.fetchUserSearchHistory();
+    fetch('https://www.eventbriteapi.com/v3/users/me/?token=7U7O53E6ZSUCFGW5LE7H')
+      .then(resp => resp.json()).then(console.log);
   }
 
   getInfo = () => {
-    console.log('AT GETINFO ',this.state);
+    this.setState({events: false})
     fetch('http://localhost:3000/searches', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -48,6 +51,28 @@ class Search extends Component {
         }
       })
   }
+  // relaySearch = () => {
+  //   // this.state.events ? this.searchEvent() : this.getInfo();
+  //   switch (this.state.value) {
+  //     case 'food': 
+  //       this.getInfo();
+  //       break;
+  //     case 'drinks':
+  //       this.getInfo();
+  //       break;
+  //     case 'music':
+  //       this.eventSearch();
+  //       break;
+  //     default:
+  //       console.log('DEFAULT');
+  //   }
+  // }
+
+  // eventSearch = () => {
+  //   fetch("https://www.eventbriteapi.com/v3/events/search/?location.address=Chicago%2C+IL&categories=103&token=46SWBQRPGACYPFBEUHZF")
+  //     .then(resp => resp.json())
+  //     .then(results => this.setState({results: results.events}))
+  // }
 
   recordCategories = searchResults => {
     let searchCategories = {};
@@ -58,7 +83,6 @@ class Search extends Component {
       })
     })
     searchCategories[this.state.value] = categoriesCount;
-    console.log('search categories = ', searchCategories);
     //Adding search category to user, next step update subsequent methods after append categories to users
     this.appendCategoriesToUser(this.state.userSearchHistory, searchCategories);
   }
@@ -98,10 +122,6 @@ class Search extends Component {
       }),
     }).then(resp => resp.json()).then(user => console.log('UPDATE RESP = ', user));
   }
-
-  // addResultsToLocalStorage = (results=this.state.searchResults) => {
-  //   localStorage.setItem('searchResults', results);
-  // }
   
   handleInputChange = () => {
     this.setState({
@@ -126,7 +146,6 @@ class Search extends Component {
 
   
   render() {
-    console.log('state= ', this.state);
     return (
       <section className="tile is-5 is-parent" id="search">
           <form 
@@ -148,57 +167,17 @@ class Search extends Component {
             <select value={this.state.value} onChange={this.handleChange}>
               <option value="food">Food</option>
               <option value="drinks">Drinks</option>
-              {/* <option value="music">Music</option>
-              <option value="movies">Movies/Visual Arts</option> */}
+              {/* <option value="music">Music</option> */}
+              {/*<option value="movies">Movies/Visual Arts</option> */}
             </select>
 
             <div id="search-bar-buttons">
               <button onClick={() => this.setState({events: false})} className="button is-dark" id="search-submit" type='submit' name='submit'>Search</button>
-              {/* <button onClick={() => this.setState({events: true})} className="button is-dark" id="search-events" type='submit' name='submit'>Events</button> */}
             </div>
-          {/* <button onClick={() => this.props.suggest('random')} className="button is-primary" id="search-suggest" type='button' name='Suggest'>Random</button> */}
         </form>
       </section>
     )
   }
 }
 
-
 export default Search;
-
-
-// const API_URL = "https://api.yelp.com/v3/businesses/search"
-
-// const yelp = require('yelp-fusion');
-// const client = yelp.client(process.env.REACT_APP_API_KEY);
-//     client.search({
-//         term: 'True Food Kitchen',
-//         location: 'chicago',
-//     }).then(response => {
-//         console.log(response.jsonBody.businesses[0].name);
-//     }).catch(e => {
-//         console.log(e);
-//     });
-
-//   getInfo = () => {
-  
-  //   }
-  //   getInfo = () => {
-    //     axios.get(API_URL, {
-      //         headers: {'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`}, 
-      //         params: {term: this.state.query}
-      //     })
-      //       .then(({ data }) => {
-        //         this.setState({
-          //           results: data                            
-          //         })
-                    //       })
-                    //   }
-                    
-                        // getInfo = () => {
-                        //     fetch(API_URL, {
-                        //         mode: 'no-cors',
-                        //         headers: {Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`},
-                        //         params: {term: this.state.query}
-                        //     }).then(resp => resp.json).then(console.log)
-                        // }

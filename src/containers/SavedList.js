@@ -34,10 +34,8 @@ class SavedList extends React.Component {
         fetch(`http://localhost:3000/saved_lists`)
         .then(resp => resp.json())
         .then(items => {
-            console.log(items)
             let userItems = items.filter(item => item.user_id === this.state.currentUser.id);
             this.setState({userItems});
-            console.log(userItems);
             let completed = this.state.userItems.filter(item => item.completed);
             let incomplete = this.state.userItems.filter(item => !item.completed);
             this.setState({incomplete, completed})
@@ -46,7 +44,6 @@ class SavedList extends React.Component {
 
     deleteSaved = venue => {
         let target = this.state.incomplete.find(saved => saved.venue_id === venue.id);
-        console.log(venue, this.state.incomplete, target);
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
@@ -62,8 +59,6 @@ class SavedList extends React.Component {
     markCompleted = venue => {
         // this.setState({yay: true});
         let target = this.state.incomplete.find(saved => saved.venue_id === venue.id);
-        console.log(venue)
-        console.log(this.state);
         let date = new Date().toLocaleDateString();
         fetch(`http://localhost:3000/saved_lists/${target.id}`, {
             method: 'PATCH',
@@ -74,7 +69,6 @@ class SavedList extends React.Component {
                 completed_on: date,
             })
         }).then(resp => resp.json()).then(result => {
-            console.log('RESULT +', result)
             this.setState({
                 completed: [...this.state.completed, result.saved_list],
                 incomplete: this.state.incomplete.filter(el => el.venue_id !== result.venue.id)
@@ -105,7 +99,6 @@ class SavedList extends React.Component {
     renderCompleted = () => {
         let sortedCompleted = this.state.completed.sort((a, b) => a.created_at < b.created_at ? -1 : 1)
         let completedIDs = sortedCompleted.map(el => el.venue_id);
-        console.log('this.state.completed', this.state.completed);
         let userCompleted = this.state.completed;
         let venues = this.state.savedList.filter(el => completedIDs.includes(el.id));
         return venues.map(venue =>  {
@@ -115,7 +108,6 @@ class SavedList extends React.Component {
     
     markIncomplete = (venue, record) => {
         // this.setState({whoops: true});
-        console.log('state completed before', this.state.completed);
         fetch(`http://localhost:3000/saved_lists/${record.id}`, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
@@ -123,7 +115,6 @@ class SavedList extends React.Component {
                 completed: false,
             })
         }).then(resp => resp.json()).then(result => {
-            console.log(result);
             this.setState({
                 incomplete: [...this.state.incomplete, result],
                 completed: this.state.completed.filter(el => el.id !== result.saved_list.id),

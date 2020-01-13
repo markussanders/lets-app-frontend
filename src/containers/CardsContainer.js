@@ -14,6 +14,7 @@ class CardsContainer extends React.Component {
             noResults: this.props.noResults,
             query: this.props.query,
             value: 'relevance',
+            events: this.props.selectedEvents
         }
         this.ref = React.createRef()
     }
@@ -46,15 +47,12 @@ class CardsContainer extends React.Component {
         let param = this.state.value;
         if (param === 'rating') {
             let sorted = venues.sort((a, b) => (b.rating - a.rating));
-            console.log('sorted rating =',sorted)
             return sorted;
         } else if (param === 'name') {
             let sorted = venues.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-            console.log('sorted name =',sorted)
             return sorted;
         } else if (param === 'reverse') {
             let sorted = venues.sort((a, b) => (b.name.toLowerCase() > a.name.toLowerCase()) ? 1 : -1);
-            console.log('sorted reverse =',sorted);
             return sorted;
         } else {
              return uniqBy(venues, 'name');
@@ -93,16 +91,15 @@ class CardsContainer extends React.Component {
         }
     }
 
-    // createEventCards() {
-    //     if (this.props.searchResults) {
-    //         let events = this.props.searched;
-    //         let uniqueEvents = uniqBy(events, 'description');
-    //         uniqueEvents = uniqBy(uniqueEvents, 'business_id');
-    //         return uniqueEvents.map(event => {
-    //             return <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} />
-    //         })
-    //     }
-    // }
+    createEventCards() {
+        if (this.props.searchResults) {
+            let events = this.props.searchResults;
+            events = uniqBy(events, 'name');
+            return events.map(event => {
+                return event.logo.url ? <EventCard event={event} key={event.id} updateSelectedEvent={this.props.updateSelectedEvent} /> : null;
+            })
+        }
+    }
     handleChange = event => {
         this.setState({value: event.target.value});
         // this.sortVenues(this.state.venues);
@@ -125,10 +122,9 @@ class CardsContainer extends React.Component {
                                 <option value="reverse"> Name (Z- A)</option>
                             </select>
                         </div>
-                        <div className = "columns is-multiline is-mobile is-centered">
+                        {/* <div className = "columns is-multiline is-mobile is-centered">
                             {this.createVenueCards()}
-                        </div>                       
-{/* 
+                        </div>                        */}
                         {this.props.selectedEvents ?
                         <div id="event-cards-container">
                             {this.createEventCards()}
@@ -137,7 +133,7 @@ class CardsContainer extends React.Component {
                         <div className = "columns is-multiline is-mobile is-centered">
                             {this.createVenueCards()}
                         </div>
-                        } */}
+                        }}
                     </div>
                 : null
             }
