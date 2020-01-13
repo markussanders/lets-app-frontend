@@ -8,15 +8,15 @@ const getLocation = venueInfo => {
     let location = venueInfo.venue.location.replace(/=>/g, ':');
     let replaced = location.replace(/nil/g, '""');
     let locationObj = JSON.parse(replaced);
-    console.log(locationObj);
     let str = locationObj.address1.split(' ').join('+')
-    console.log(str);
 }
-const getCoordinates = venueInfo => {
-    let coordinates = venueInfo.venue.coordinates.replace(/=>/g, ':');
-    let output = JSON.parse(coordinates);
-    console.log('coordinates', output);
-    return coordinates;
+const getCoordinates = venue => {
+    if (venue) {
+        let coordinates = venue.venue.coordinates.replace(/=>/g, ':');
+        let output = JSON.parse(coordinates);
+        return coordinates;
+    }
+    return false;
 }
 
 
@@ -30,18 +30,35 @@ class VenueShow extends React.Component {
             path: this.props.venuePath,
             active: false,
             saved: null,
+            coordinates: getCoordinates(this.props.venue),
         };
         this.fetchVenue(this.props.path);
 
     }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+            // console.log('HERE')
+            // let coordinates = this.state.venue.venue.coordinates.replace(/=>/g, ':');
+            // let output = JSON.parse(coordinates);
+            // console.log('coordinates', output);
+            // this.setState({coordinates});
+    }
+
+    checkForCoordinates = () => {
+        return this.state.coordinates ? true : false;
+    }
+
+    // setCoordinates = () => {
+    //     let coordinates = getCoordinates(this.props.venue);
+    //     this.setState({coordinates});
+    // }
 
     fetchVenue = (path) => {
-        console.log('PATH= ',path)
         fetch(`http://localhost:3000${this.state.path}`)
             .then(resp => resp.json())
             .then(venue => {
                 this.setState({
-                    venue: venue
+                    venue: venue, 
                 })
             })
     }
@@ -122,15 +139,11 @@ class VenueShow extends React.Component {
         }).then(resp => resp.json()).then(message => console.log(message));
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
 
     // renderLocationObj = () => {
     //     if (this.state.venue) {
     //         const venueInfo = this.state.venue;
     //         let location = venueInfo.venue.location;
-    //         console.log('LOCATION =', location);
     //     }
     // }
     render () {
@@ -145,7 +158,6 @@ class VenueShow extends React.Component {
         //         <button class="modal-close is-large" aria-label="close"></button>
         //     </div>
         // )
-        console.log("state =", this.state);
         return (
             <div id="venue-show-page">
                 {this.state.venue ? 
@@ -186,7 +198,7 @@ class VenueShow extends React.Component {
                     }}>SHARE</h4>
                 </div>
                 <div>
-                    <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} />
+                    {this.checkForCoordinates() ? <MyFancyComponent venueLocation={getLocation(venueInfo)} coordinates={getCoordinates(venueInfo)} /> : null}
                 </div>
                 </div> : null}
             </div>

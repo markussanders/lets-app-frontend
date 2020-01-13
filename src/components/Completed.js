@@ -12,7 +12,7 @@ const Completed = props => {
         <div id="completed-venues">
             <ul id="completed-list">
                 <li key={venue.id}>
-                    <p>{venue.name}<span>{`~(${date})`}</span></p>
+                    <a href={`/venues/${venue.yelp_id}`}><p>{venue.name}<span>{`~(${date})`}</span></p></a>
                     <button className="mark-incomplete" onClick={() => props.markIncomplete(venue, record)}>X</button>
                 </li>            
             </ul>

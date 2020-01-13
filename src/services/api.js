@@ -25,7 +25,6 @@ export default {
     },
 
     signup: async (signupData) => {
-        console.log('signupData', signupData)
         const reqObj = {
             method: 'POST',
             headers: {

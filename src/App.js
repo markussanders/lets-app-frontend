@@ -14,15 +14,15 @@ import SavedList from './containers/SavedList';
 import Profile from './containers/Profile';
 import Signup from './components/Signup';
 import UserCalendar from './containers/UserCalendar';
+import About from './components/About';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: (JSON.parse(localStorage.getItem('user')) || { user: { id: 1, token: null } }),
+      currentUser: (JSON.parse(localStorage.getItem('user')) || { id: 1, token: null }),
       selectedVenue: null,
-      selectedEvent: null,
       imgUrl: '',
       loginForm: false,
       signupForm: false,
@@ -36,16 +36,10 @@ class App extends React.Component {
     }
   }
 
-  // componentWillMount() {
-  //   let retrievedUser = localStorage.length > 0 ? JSON.parse(localStorage.user) : false;
-  //   this.setState({currentUser: retrievedUser})
-  // }
-
   updateSearched = childState => {
-    console.log('CHILD STATE = ', childState.results)
     this.setState({
-      searchResults: childState.results,
       events: childState.events,
+      searchResults: childState.results,
       noResults: childState.noResults,
       query: childState.query
     })
@@ -110,7 +104,6 @@ class App extends React.Component {
   }
 
   render () {
-    console.log('APP STATE no results = ', this.state.noResults)
     return (
     <div>
       <Switch> 
@@ -140,7 +133,7 @@ class App extends React.Component {
                   { this.state.noResults ? 
                     <h2 id="showing-results-for">{this.state.noResults}</h2> 
                   : 
-                    <CardsContainer  noResults={this.state.noResults} searchResults={this.state.searchResults} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/>
+                   this.state.searchResults.length >= 1 ? <CardsContainer  noResults={this.state.noResults} searchResults={this.state.searchResults} query={this.state.query} updateSelectedVenue={this.updateSelectedVenue} updateSearched={this.updateSearched} handleSignup={this.handleSignup} selectedEvents={this.state.events} updatedSelectedEvent={this.updatedSelectedEvent}/> : null
                   }
                 </section>
               </div>
@@ -205,7 +198,7 @@ class App extends React.Component {
           }} />
 
           <Route exact path='/users/:id' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="profile">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
@@ -225,7 +218,7 @@ class App extends React.Component {
           } />
 
           <Route exact path='/users/:id/saved' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="saved">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
@@ -244,7 +237,7 @@ class App extends React.Component {
             }
           } />
           <Route exact path='/users/:id/calendar' render={(routeProps) => {
-            return localStorage.getItem('user_id') ?
+            return localStorage.getItem('user') ?
                 <section id="saved">
                   {this.state.loginForm ? 
                     <Login currentUser = {this.state.currentUser} loginForm = {this.loginForm} handleLogin = {this.handleLogin}/>
@@ -262,6 +255,14 @@ class App extends React.Component {
                 <Redirect to='/home'/>
             }
           } />
+           <Route exact path='/about' render={(routeProps) => {
+                 return ( 
+                  <section>
+                    <NavBar currentUser = {this.state.currentUser} loginForm = {this.loginForm} signupForm= {this.signupForm}handleLogout = {this.handleLogout} handleSignup={this.handleSignup}/>
+                    <About history={routeProps.history}/>
+                  </section>
+                  )
+               }} /> 
      </Switch>
     </div>
   );
